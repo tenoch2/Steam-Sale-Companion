@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<games>
+	<game>
+		<title>Hunie Cam Studio</title>
+		<cost>4.61</cost>
+		<sale>.34</sale>
+		<priority>2</priority>
+	</game>
+	<game>
+		<title>nekopara</title>
+		<cost>6.69</cost>
+		<sale>.33</sale>
+		<priority>1</priority>
+	</game>
+	<game>
+		<title>stardew valley</title>
+		<cost>11.99</cost>
+		<sale>.2</sale>
+		<priority>1</priority>
+	</game>
+	<game>
+		<title>Offworld Trading Company</title>
+		<cost>19.99</cost>
+		<sale>.5</sale>
+		<priority>1</priority>
+	</game>
+	<game>
+		<title>crusader kings 2</title>
+		<cost>9.99</cost>
+		<sale>.75</sale>
+		<priority>1</priority>
+	</game>
+	<game>
+		<title>rocket league</title>
+		<cost>11.99</cost>
+		<sale>.4</sale>
+		<priority>2</priority>
+	</game>
+	<game>
+		<title>braid</title>
+		<cost>2.54</cost>
+		<sale>.83</sale>
+		<priority>2</priority>
+	</game>
+</games>
