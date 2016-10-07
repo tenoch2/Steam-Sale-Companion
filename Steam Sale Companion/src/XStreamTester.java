@@ -16,13 +16,11 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 public class XStreamTester {
 	public static void main(String[] args){
 		XStreamTester tester = new XStreamTester();
-		XStream gameStream = new XStream(new StaxDriver());
+		XStream xstream = new XStream(new StaxDriver());
+		GameOnSale testGame = new GameOnSale("Moose Effect", 50.0, 0.1, 1);
 		
-		GameOnSale game = new GameOnSale("Haven", 50.00, .6, 1);
-		
-		String out = gameStream.toXML(game);
-		System.out.println(formatXml(out));
-		
+		String xml = xstream.toXML(testGame);
+		System.out.println(formatXml(xml));
 	}
 	
 	public static String formatXml(String xml){
