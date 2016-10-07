@@ -17,6 +17,10 @@ public class XStreamTester {
 	public static void main(String[] args){
 		XStreamTester tester = new XStreamTester();
 		XStream xstream = new XStream(new StaxDriver());
+		
+		//xstream.alias("Game", GameOnSale.class);
+		xstream.processAnnotations(GameOnSale.class);
+		
 		GameOnSale testGame = new GameOnSale("Moose Effect", 50.0, 0.1, 1);
 		
 		String xml = xstream.toXML(testGame);

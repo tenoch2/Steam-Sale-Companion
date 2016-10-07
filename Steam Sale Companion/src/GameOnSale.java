@@ -1,4 +1,6 @@
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+@XStreamAlias("game")
 public class GameOnSale {
 	
 	private Double cost;
