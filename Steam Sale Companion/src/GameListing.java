@@ -1,11 +1,9 @@
 
 public class GameListing extends Game implements Comparable<GameListing>{
 	int score;
-	String name;
 	
-	public GameListing(Game game, String name){
-		super(game);
-		this.name = name;
+	public GameListing(String title, Double cost, Double sale, Integer priority){
+		super(title,cost,sale,priority);
 	}
 	
 	public Integer getScore() {
@@ -15,16 +13,6 @@ public class GameListing extends Game implements Comparable<GameListing>{
 	public void setScore(int score) {
 		this.score = score;
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	
 	
 	@Override
 	public int compareTo(GameListing o){

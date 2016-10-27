@@ -30,14 +30,15 @@ public class ListMaker {
 	}
 
 	private static List<Game> scoreGames(ArrayList<Game> games) {
-		// make an empty list
+		
 		List<Game> gameResults = new ArrayList<Game>();
-
-		// find the lowest price and best sale
+		GameListingFactory gameListings = new GameListingFactory();
+		
+		
 		double lowestPrice = getLowestCost(games);
 		
 
-		// generate scores
+		
 		int priceWeight;
 		int priorityWeight;
 		int saleWeight;
@@ -49,14 +50,16 @@ public class ListMaker {
 		System.out.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", priority rate : " + priorityRate);
 
 		for (Game game : games) {
-			// generate weights
+			
 			priceWeight = (int) (Math.sqrt(lowestPrice / game.getCost()) * costRate);
 			saleWeight = (int) (game.getSale() * saleRate);
 			priorityWeight = priorityRate / game.getPriority();
 
-			// add score and name to list
+			
 			int score = priceWeight + saleWeight + priorityWeight;
-			//gameResults.add(game);
+			Game gameToList = gameListings.enListGame(game.getTitle(), game.getCost(), game.getSale(), game.getPriority());
+			gameToList.setScore(score);
+			gameResults.add(gameToList);
 		}
 
 		Collections.sort(gameResults, Collections.reverseOrder());

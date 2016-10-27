@@ -13,10 +13,6 @@ public abstract class Game {
 		this.title = title;
 	}
 	
-	public Game(Game game) {
-		//this = game;
-	}
-
 	public Integer getScore() {
 		return score;
 	}
