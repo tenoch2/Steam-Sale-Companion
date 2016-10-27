@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -30,7 +31,7 @@ public class XStreamTester {
 	public static String formatXml(String xml){
 		
 		try{
-			Transformer serializer = SAXTransformerFactory.newInstance().newTransformer();
+			Transformer serializer = TransformerFactory.newInstance().newTransformer();
 			
 			serializer.setOutputProperty(OutputKeys.INDENT, "yes");
 			serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");

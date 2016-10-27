@@ -1,9 +1,14 @@
-import java.util.*;
-public class ListOfGames implements Comparable<ListOfGames>{
+
+public class GameListing extends Game implements Comparable<GameListing>{
 	int score;
 	String name;
 	
-	public int getScore() {
+	public GameListing(Game game, String name){
+		super(game);
+		this.name = name;
+	}
+	
+	public Integer getScore() {
 		return score;
 	}
 
@@ -19,13 +24,11 @@ public class ListOfGames implements Comparable<ListOfGames>{
 		this.name = name;
 	}
 
-	public ListOfGames(int score, String name){
-		this.score = score;
-		this.name = name;
-	}
+	
 	
 	@Override
-	public int compareTo(ListOfGames o){
+	public int compareTo(GameListing o){
 		return score < o.score ? -1 : score > o.score ? 1 : 0;
 	}
+
 }

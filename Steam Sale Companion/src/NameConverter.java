@@ -1,6 +1,7 @@
 import com.thoughtworks.xstream.converters.SingleValueConverter;
 
 public class NameConverter implements SingleValueConverter{
+	@Override
 	public Object fromString(String game){
 		String[] gameParts = game.split(",");
 		return new GameOnSale(gameParts[0], Double.parseDouble(gameParts[1]),
