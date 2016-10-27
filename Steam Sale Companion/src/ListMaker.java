@@ -29,52 +29,51 @@ public class ListMaker {
 
 	}
 
-	private static List<Game> scoreGames(ArrayList<Game> games) {
-		
-		List<Game> gameResults = new ArrayList<Game>();
-		GameListingFactory gameListings = new GameListingFactory();
-		
-		
-		double lowestPrice = getLowestCost(games);
-		
+	public static List<Game> scoreGames(ArrayList<Game> games) {
 
-		
-		int priceWeight;
-		int priorityWeight;
-		int saleWeight;
+		List<Game> gameResults = new ArrayList<Game>();	
 
 		int costRate = 40;
 		int saleRate = 40;
 		int priorityRate = 20;
 
-		System.out.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", priority rate : " + priorityRate);
+		System.out
+				.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", priority rate : " + priorityRate);
 
+		generateScores(gameResults, games, costRate, saleRate, priorityRate);
+		
+		Collections.sort(gameResults, Collections.reverseOrder());
+		return gameResults;
+	}
+
+	private static void generateScores(List<Game> results, List<Game> games, int costRate, int saleRate, int priorityRate){
+		int priceWeight;
+		int priorityWeight;
+		int saleWeight;
+		double lowestPrice = getLowestCost(games);
+		GameListingFactory gameListings = new GameListingFactory();	
 		for (Game game : games) {
-			
+
 			priceWeight = (int) (Math.sqrt(lowestPrice / game.getCost()) * costRate);
 			saleWeight = (int) (game.getSale() * saleRate);
 			priorityWeight = priorityRate / game.getPriority();
 
-			
 			int score = priceWeight + saleWeight + priorityWeight;
-			Game gameToList = gameListings.enListGame(game.getTitle(), game.getCost(), game.getSale(), game.getPriority());
+			Game gameToList = gameListings.enListGame(game.getTitle(), game.getCost(), game.getSale(),
+					game.getPriority());
 			gameToList.setScore(score);
-			gameResults.add(gameToList);
+			
+			results.add(gameToList);
 		}
-
-		Collections.sort(gameResults, Collections.reverseOrder());
-		return gameResults;
 	}
-	
-	private static double getLowestCost(List<Game> games){
-		double lowest = (double)Integer.MAX_VALUE;
+	private static double getLowestCost(List<Game> games) {
+		double lowest = Integer.MAX_VALUE;
 		for (Game game : games) {
 			if (game.getCost() < lowest)
 				lowest = game.getCost();
 		}
 		return lowest;
-		
-				
+
 	}
 
 }
