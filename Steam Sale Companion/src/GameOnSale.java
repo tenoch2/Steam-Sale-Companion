@@ -1,4 +1,4 @@
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 
 
 public class GameOnSale extends Game {

@@ -6,7 +6,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
 import org.xml.sax.InputSource;
@@ -19,10 +18,10 @@ public class XStreamTester {
 		XStreamTester tester = new XStreamTester();
 		XStream xstream = new XStream(new StaxDriver());
 		
-		//xstream.alias("Game", GameOnSale.class);
-		xstream.processAnnotations(GameOnSale.class);
-		
-		GameOnSale testGame = new GameOnSale("Moose Effect", 50.0, 0.1, 1);
+		//xstream.alias("Game", Game.class);
+		xstream.processAnnotations(Game.class);
+		GameOnSaleFactory gameMaker = new GameOnSaleFactory();
+		Game testGame = gameMaker.makeGame("Moose Effect", 50.0, 0.1, 1);
 		
 		String xml = xstream.toXML(testGame);
 		System.out.println(formatXml(xml));

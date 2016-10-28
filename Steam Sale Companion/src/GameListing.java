@@ -6,6 +6,7 @@ public class GameListing extends Game implements Comparable<GameListing>{
 		super(title,cost,sale,priority);
 	}
 	
+	@Override
 	public Integer getScore() {
 		return score;
 	}
