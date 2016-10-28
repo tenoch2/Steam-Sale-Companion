@@ -63,7 +63,7 @@ public abstract class Game {
 	
 	public String toString(){
 		String result = "";
-		result += (this.title + ", $" + this.cost + ", %" + this.sale + ", " + this.priority);
+		result += (this.title + ", $" + this.cost + ", %" + this.sale*100 + ", " + this.priority);
 		return result;
 	}
 }
