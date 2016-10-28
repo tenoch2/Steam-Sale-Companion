@@ -1,5 +1,6 @@
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicitCollection;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 @XStreamAlias("game")
@@ -24,6 +25,7 @@ public abstract class Game {
 		this.sale = sale;
 		this.priority = priority;
 		this.title = title;
+		//this.score = score;
 	}
 	
 	public String getTitle() {
@@ -57,5 +59,11 @@ public abstract class Game {
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+	
+	public String toString(){
+		String result = "";
+		result += (this.title + ", $" + this.cost + ", %" + this.sale + ", " + this.priority);
+		return result;
 	}
 }
