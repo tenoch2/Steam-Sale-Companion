@@ -19,6 +19,7 @@ public class ListMaker {
 		 * catch (FileNotFoundException e1) { System.out.println(
 		 * "File handling error"); e1.printStackTrace(); }
 		 */
+		
 		GameOnSaleFactory gameFactory = new GameOnSaleFactory();
 		Game testGame = gameFactory.enlistGame("Moose Effect", 50.0, 0.1, 1);
 		Game testGame2 = gameFactory.enlistGame("Diabloo", 20.0, .4, 2);
