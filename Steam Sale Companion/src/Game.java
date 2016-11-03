@@ -3,7 +3,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicitCollection;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
-@XStreamAlias("game")
+
 public abstract class Game {
 	@XStreamAlias("title")
 	@XStreamAsAttribute
@@ -14,11 +14,11 @@ public abstract class Game {
 	@XStreamAlias("sale")
 	@XStreamAsAttribute
 	private Double sale;
-	@XStreamAlias("Priority")
+	@XStreamAlias("priority")
 	@XStreamAsAttribute
 	private Integer priority;
 	@XStreamOmitField
-	private Integer score;
+	private double score;
 	
 	public Game(String title, Double cost, Double sale, Integer priority){
 		this.cost = cost;
@@ -53,11 +53,11 @@ public abstract class Game {
 		this.priority = priority;
 	}
 
-	public Integer getScore() {
+	public double getScore() {
 		return score;
 	}
 
-	public void setScore(Integer score) {
+	public void setScore(double score) {
 		this.score = score;
 	}
 	
