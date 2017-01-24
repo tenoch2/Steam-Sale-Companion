@@ -43,10 +43,6 @@ public class ListMaker {
 		
 		GameOnSaleFactory gameFactory = new GameOnSaleFactory();
 		
-		steamGames.forEach(game -> 
-			
-				);
-		
 		Game testGame = gameFactory.enlistGame("Moose Effect", 50.0, 0.1, 2);
 		Game testGame2 = gameFactory.enlistGame("Diabloo", 20.0, .4, 3);
 		Game testGame3 = gameFactory.enlistGame("Moon Coaster", 30.0, 0.5, 1);
