@@ -1,16 +1,11 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.swing.plaf.synth.SynthSeparatorUI;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
@@ -37,6 +32,7 @@ public class ListMaker {
 			for (Game game : results) {
 				System.out.printf("%s | score: %.2f \n", game.getSteamGame().getName(), game.getScore());
 			}
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -70,7 +66,12 @@ public class ListMaker {
 
 			priceWeight = (Math.sqrt(lowestPrice / game.getPrice()) * costRate);
 			saleWeight = (game.getPriceDiscountPercentage() / 100 * saleRate);
-			reviewWeight = (reviewRate / game.getMetacriticScore());
+
+			if (game.getMetacriticScore() != null)
+				reviewWeight = (reviewRate / game.getMetacriticScore());
+			else
+				reviewWeight = 0;
+
 			double score = priceWeight + saleWeight + reviewWeight;
 			Game newGame = new Game(game, score);
 			gameWithScores.add(newGame);
