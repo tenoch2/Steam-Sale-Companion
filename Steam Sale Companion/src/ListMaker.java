@@ -22,17 +22,16 @@ public class ListMaker {
 		SteamApi steam = new SteamApi("US");
 		List<String> gameNames;
 		List<Game> games = new ArrayList<Game>();
-		
+		List<SteamApp> steamGames;
 		
 		try {
 			gameNames = getGameNames("GameNames.txt");
-			List<SteamApp> steamGames = new ArrayList<SteamApp>();
+			steamGames = new ArrayList<SteamApp>();
 			for(String name : gameNames){
 				steamGames.add(steam.retrieve(name));
 			}
 			steamGames.forEach(game -> System.out.println(game.getName()));
 		} catch (IOException e1) {
-			
 			e1.printStackTrace();
 		}
 		System.out.println("end API test");
@@ -43,6 +42,11 @@ public class ListMaker {
 		
 		
 		GameOnSaleFactory gameFactory = new GameOnSaleFactory();
+		
+		steamGames.forEach(game -> 
+			
+				);
+		
 		Game testGame = gameFactory.enlistGame("Moose Effect", 50.0, 0.1, 2);
 		Game testGame2 = gameFactory.enlistGame("Diabloo", 20.0, .4, 3);
 		Game testGame3 = gameFactory.enlistGame("Moon Coaster", 30.0, 0.5, 1);

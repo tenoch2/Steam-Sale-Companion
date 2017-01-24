@@ -1,23 +1,16 @@
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicitCollection;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 
 public abstract class Game {
-	@XStreamAlias("title")
-	@XStreamAsAttribute
+	
 	private String title;
-	@XStreamAlias("cost")
-	@XStreamAsAttribute
+	
 	private Double cost;
-	@XStreamAlias("sale")
-	@XStreamAsAttribute
+	
 	private Double sale;
-	@XStreamAlias("priority")
-	@XStreamAsAttribute
+	
+	
 	private Integer priority;
-	@XStreamOmitField
+	
 	private double score;
 	
 	public Game(String title, Double cost, Double sale, Integer priority){
