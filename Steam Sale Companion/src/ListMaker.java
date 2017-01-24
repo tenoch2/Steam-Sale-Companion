@@ -9,6 +9,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
@@ -22,7 +25,7 @@ public class ListMaker {
 		SteamApi steam = new SteamApi("US");
 		List<String> gameNames;
 		List<SteamApp> steamGames;
-		Map<SteamApp,Double> results;
+		List<Game> results;
 		
 		try {
 			gameNames = getGameNames("GameNames.txt");
@@ -30,15 +33,17 @@ public class ListMaker {
 			for(String name : gameNames){
 				steamGames.add(steam.retrieve(name));
 			}
-			steamGames.forEach(game -> System.out.println(game.getName()));
+			//steamGames.forEach(game -> System.out.println(game.getName()));
 			
 			
 			results = scoreGames(steamGames);
 			
-			for (SteamApp key : results.keySet()) {
-				System.out.printf("%s | score: %n", key.getName(), results.get(key));
+			for (Game game : results) {
+				System.out.printf("%s | score: %.2f \n", 
+						game.getSteamGame().getName(),
+						game.getScore()
+						 );
 			}
-			
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -52,13 +57,13 @@ public class ListMaker {
 
 	}
 
-	public static Map<SteamApp,Double> scoreGames(List<SteamApp> games) {
+	public static List<Game> scoreGames(List<SteamApp> games) {
 
-		Map<SteamApp,Double> gameResults = new HashMap<SteamApp,Double>();
+		List<Game> gameResults = new ArrayList<Game>();
 
 		int costRate = 40;
-		int saleRate = 30;
-		int reviewRate = 10;
+		int saleRate = 20;
+		int reviewRate = 40;
 		
 		System.out
 				.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
@@ -67,15 +72,13 @@ public class ListMaker {
 		return gameResults;
 	}
 
-	private static Map<SteamApp,Double> generateScores(List<SteamApp> games, int costRate, int saleRate, int reviewRate) {
+	private static List<Game> generateScores(List<SteamApp> games, int costRate, int saleRate, int reviewRate) {
 
 		double priceWeight;
 		double reviewWeight;
 		double saleWeight;
-		List<SteamApp> results = new ArrayList<SteamApp>();
-		GameListingFactory gameListings = new GameListingFactory();
 		double lowestPrice = getLowestCost(games);
-		Map<SteamApp,Double> gameWithScores = new HashMap<SteamApp,Double>();
+		List<Game> gameWithScores = new ArrayList<Game>();
 
 		for (SteamApp game : games) {
 
@@ -83,13 +86,8 @@ public class ListMaker {
 			saleWeight =  (game.getPriceDiscountPercentage() / 100 * saleRate);
 			reviewWeight =  (reviewRate / game.getMetacriticScore());
 			double score = priceWeight + saleWeight + reviewWeight;
-
-			SteamApp gameToList = gameListings.enlistGame(game.getName(), game.getPrice(), (double)((double)game.getPriceDiscountPercentage() / 100),
-					game.getMetacriticScore());
-			
-			gameWithScores.put(gameToList, score);
-
-			results.add(gameToList);
+			Game newGame = new Game(game, score);
+			gameWithScores.add(newGame);
 		}
 		
 		
@@ -98,7 +96,7 @@ public class ListMaker {
 	}
 
 	
-	public static List<SteamApp> sortGameList(Map<SteamApp,Double> games) {
+	public static List<SteamApp> sortGameList(List<Game> games) {
 		throw new UnsupportedOperationException();
 	}
 
