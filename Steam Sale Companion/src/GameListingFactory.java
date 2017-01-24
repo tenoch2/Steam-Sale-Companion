@@ -1,9 +1,12 @@
+import com.github.goive.steamapi.data.SteamApp;
 
 public class GameListingFactory extends GameFactory{
 
+
 	@Override
-	protected GameListing makeGame(String title, Double cost, Double sale, Integer priority) {
-		return new GameListing(title,cost,sale, priority);
+	protected SteamApp makeGame(String title, Double cost, double d, Integer priority) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

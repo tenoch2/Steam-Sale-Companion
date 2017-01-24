@@ -21,8 +21,8 @@ public class ListMaker {
 		
 		SteamApi steam = new SteamApi("US");
 		List<String> gameNames;
-		List<Game> games = new ArrayList<Game>();
 		List<SteamApp> steamGames;
+		Map<SteamApp,Double> results;
 		
 		try {
 			gameNames = getGameNames("GameNames.txt");
@@ -31,6 +31,14 @@ public class ListMaker {
 				steamGames.add(steam.retrieve(name));
 			}
 			steamGames.forEach(game -> System.out.println(game.getName()));
+			
+			
+			results = scoreGames(steamGames);
+			
+			for (SteamApp key : results.keySet()) {
+				System.out.printf("%s | score: %n", key.getName(), results.get(key));
+			}
+			
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -38,90 +46,72 @@ public class ListMaker {
 		
 	
 		
+	
+	
 		
-		
-		
-		GameOnSaleFactory gameFactory = new GameOnSaleFactory();
-		
-		Game testGame = gameFactory.enlistGame("Moose Effect", 50.0, 0.1, 2);
-		Game testGame2 = gameFactory.enlistGame("Diabloo", 20.0, .4, 3);
-		Game testGame3 = gameFactory.enlistGame("Moon Coaster", 30.0, 0.5, 1);
-		games.add(testGame);
-		games.add(testGame2);
-		games.add(testGame3);
-		
-		games.forEach(game -> System.out.println(game.toString()));
-		System.out.println("");
-
-		List<Game> results = scoreGames(games);
-		int listNum = 1;
-		for (Game game : results) {
-			System.out.printf("%d: %s | score: %.2f %n", listNum, game.getTitle(), game.getScore());
-			listNum++;
-		}
 
 	}
 
-	public static List<Game> scoreGames(List<Game> games) {
+	public static Map<SteamApp,Double> scoreGames(List<SteamApp> games) {
 
-		List<Game> gameResults = new ArrayList<Game>();
+		Map<SteamApp,Double> gameResults = new HashMap<SteamApp,Double>();
 
 		int costRate = 40;
 		int saleRate = 30;
-		int priorityRate = 10;
+		int reviewRate = 10;
 		
 		System.out
-				.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", priority rate : " + priorityRate);
-
-		gameResults = generateScores(games, costRate, saleRate, priorityRate);
+				.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
+		
+		gameResults = generateScores(games, costRate, saleRate, reviewRate);
 		return gameResults;
 	}
 
-	private static List<Game> generateScores(List<Game> games, int costRate, int saleRate, int priorityRate) {
+	private static Map<SteamApp,Double> generateScores(List<SteamApp> games, int costRate, int saleRate, int reviewRate) {
 
 		double priceWeight;
-		double priorityWeight;
+		double reviewWeight;
 		double saleWeight;
-		List<Game> results = new ArrayList<Game>();
+		List<SteamApp> results = new ArrayList<SteamApp>();
 		GameListingFactory gameListings = new GameListingFactory();
 		double lowestPrice = getLowestCost(games);
+		Map<SteamApp,Double> gameWithScores = new HashMap<SteamApp,Double>();
 
-		for (Game game : games) {
+		for (SteamApp game : games) {
 
-			priceWeight =  (Math.sqrt(lowestPrice / game.getCost()) * costRate);
-			saleWeight =  (game.getSale() * saleRate);
-			priorityWeight =  (priorityRate / game.getPriority());
-			double score = priceWeight + saleWeight + priorityWeight;
+			priceWeight =  (Math.sqrt(lowestPrice / game.getPrice()) * costRate);
+			saleWeight =  (game.getPriceDiscountPercentage() / 100 * saleRate);
+			reviewWeight =  (reviewRate / game.getMetacriticScore());
+			double score = priceWeight + saleWeight + reviewWeight;
 
-			Game gameToList = gameListings.enlistGame(game.getTitle(), game.getCost(), game.getSale(),
-					game.getPriority());
-			gameToList.setScore(score);
+			SteamApp gameToList = gameListings.enlistGame(game.getName(), game.getPrice(), (double)((double)game.getPriceDiscountPercentage() / 100),
+					game.getMetacriticScore());
+			
+			gameWithScores.put(gameToList, score);
 
 			results.add(gameToList);
 		}
-		results = sortGameList(results);
-		return results;
+		
+		
+		
+		return gameWithScores;
 	}
 
 	
-	public static List<Game> sortGameList(List<Game> games) {
-		return games.parallelStream().sorted((g1, g2) -> Double.compare(g2.getScore(), g1.getScore()))
-				.collect(Collectors.toList());
+	public static List<SteamApp> sortGameList(Map<SteamApp,Double> games) {
+		throw new UnsupportedOperationException();
 	}
 
-	private static double getLowestCost(List<Game> games) {
+	private static double getLowestCost(List<SteamApp> games) {
 		double lowest = Integer.MAX_VALUE;
-		for (Game game : games) {
-			if (game.getCost() < lowest)
-				lowest = game.getCost();
+		for (SteamApp game : games) {
+			if (game.getPrice() < lowest)
+				lowest = game.getPrice();
 		}
 		return lowest;
 
 	}
 
-	public static void printGame(Game game) {
-		System.out.println(game.toString());
-	}
 	
 	public static List<String> getGameNames(String fileName) throws IOException{
 		Path path = Paths.get(fileName);

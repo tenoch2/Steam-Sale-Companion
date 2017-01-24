@@ -1,13 +1,19 @@
+import com.github.goive.steamapi.data.SteamApp;
 
 public abstract class GameFactory {
 	
-	public Game enlistGame(String title, Double cost, Double sale, Integer priority){
-		Game game;
-		game = makeGame(title, cost, sale, priority);
+	public SteamApp enlistGame(String title, Double cost, double d, Integer priority){
+		SteamApp game;
+		game = makeGame(title, cost, d, priority);
 		return game;
 	}
 	
-	protected abstract Game makeGame(String title, Double cost, Double sale, Integer priority);
+	protected abstract SteamApp makeGame(String title, Double cost, double d, Integer priority);
+
+	protected GameListing makeGame(String title, Double cost, Double sale, Integer priority) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 	
