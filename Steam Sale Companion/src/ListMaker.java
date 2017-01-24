@@ -1,36 +1,46 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.StaxDriver;
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
 
 public class ListMaker {
-	public static void main(String[] args) {
-
-		// = new ArrayList<Game>();
-
-		XStream xstream = new XStream();
-		List<Game> games = new ArrayList<Game>();
+	final static Charset ENCODING = StandardCharsets.UTF_8;
+	
+	public static void main(String[] args) throws SteamApiException {
+		
 		
 		SteamApi steam = new SteamApi("US");
-		SteamApp PCoast;
-		try{
-			PCoast = steam.retrieve("Planet Coaster");
-			if(PCoast.isDiscounted()){
-				System.out.println("Planet Coaster is discounted");
-			} else {
-				System.out.println("naw, fam.");
-			}
-		} catch (SteamApiException e) {
-			e.printStackTrace();
-		}
+		List<String> gameNames;
+		List<Game> games = new ArrayList<Game>();
 		
+		
+		try {
+			gameNames = getGameNames("GameNames.txt");
+			List<SteamApp> steamGames = new ArrayList<SteamApp>();
+			for(String name : gameNames){
+				steamGames.add(steam.retrieve(name));
+			}
+			steamGames.forEach(game -> System.out.println(game.getName()));
+		} catch (IOException e1) {
+			
+			e1.printStackTrace();
+		}
 		System.out.println("end API test");
+		
+	
+		
+		
+		
 		
 		GameOnSaleFactory gameFactory = new GameOnSaleFactory();
 		Game testGame = gameFactory.enlistGame("Moose Effect", 50.0, 0.1, 2);
@@ -39,7 +49,7 @@ public class ListMaker {
 		games.add(testGame);
 		games.add(testGame2);
 		games.add(testGame3);
-		System.out.println(xstream.toXML(testGame));
+		
 		games.forEach(game -> System.out.println(game.toString()));
 		System.out.println("");
 
@@ -93,6 +103,7 @@ public class ListMaker {
 		return results;
 	}
 
+	
 	public static List<Game> sortGameList(List<Game> games) {
 		return games.parallelStream().sorted((g1, g2) -> Double.compare(g2.getScore(), g1.getScore()))
 				.collect(Collectors.toList());
@@ -110,6 +121,11 @@ public class ListMaker {
 
 	public static void printGame(Game game) {
 		System.out.println(game.toString());
+	}
+	
+	public static List<String> getGameNames(String fileName) throws IOException{
+		Path path = Paths.get(fileName);
+		return Files.readAllLines(path, ENCODING);
 	}
 
 }
