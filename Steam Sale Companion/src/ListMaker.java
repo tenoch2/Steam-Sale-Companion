@@ -18,42 +18,29 @@ import com.github.goive.steamapi.exceptions.SteamApiException;
 
 public class ListMaker {
 	final static Charset ENCODING = StandardCharsets.UTF_8;
-	
+
 	public static void main(String[] args) throws SteamApiException {
-		
-		
+
 		SteamApi steam = new SteamApi("US");
 		List<String> gameNames;
 		List<SteamApp> steamGames;
 		List<Game> results;
-		
+
 		try {
 			gameNames = getGameNames("GameNames.txt");
 			steamGames = new ArrayList<SteamApp>();
-			for(String name : gameNames){
+			for (String name : gameNames) {
 				steamGames.add(steam.retrieve(name));
 			}
-			//steamGames.forEach(game -> System.out.println(game.getName()));
-			
-			
 			results = scoreGames(steamGames);
-			
+
 			for (Game game : results) {
-				System.out.printf("%s | score: %.2f \n", 
-						game.getSteamGame().getName(),
-						game.getScore()
-						 );
+				System.out.printf("%s | score: %.2f \n", game.getSteamGame().getName(), game.getScore());
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 		System.out.println("end API test");
-		
-	
-		
-	
-	
-		
 
 	}
 
@@ -64,10 +51,9 @@ public class ListMaker {
 		int costRate = 40;
 		int saleRate = 20;
 		int reviewRate = 40;
-		
-		System.out
-				.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
-		
+
+		System.out.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
+
 		gameResults = generateScores(games, costRate, saleRate, reviewRate);
 		return gameResults;
 	}
@@ -82,20 +68,17 @@ public class ListMaker {
 
 		for (SteamApp game : games) {
 
-			priceWeight =  (Math.sqrt(lowestPrice / game.getPrice()) * costRate);
-			saleWeight =  (game.getPriceDiscountPercentage() / 100 * saleRate);
-			reviewWeight =  (reviewRate / game.getMetacriticScore());
+			priceWeight = (Math.sqrt(lowestPrice / game.getPrice()) * costRate);
+			saleWeight = (game.getPriceDiscountPercentage() / 100 * saleRate);
+			reviewWeight = (reviewRate / game.getMetacriticScore());
 			double score = priceWeight + saleWeight + reviewWeight;
 			Game newGame = new Game(game, score);
 			gameWithScores.add(newGame);
 		}
-		
-		
-		
+
 		return gameWithScores;
 	}
 
-	
 	public static List<SteamApp> sortGameList(List<Game> games) {
 		throw new UnsupportedOperationException();
 	}
@@ -110,8 +93,7 @@ public class ListMaker {
 
 	}
 
-	
-	public static List<String> getGameNames(String fileName) throws IOException{
+	public static List<String> getGameNames(String fileName) throws IOException {
 		Path path = Paths.get(fileName);
 		return Files.readAllLines(path, ENCODING);
 	}
