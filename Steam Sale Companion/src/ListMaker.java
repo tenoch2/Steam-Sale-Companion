@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
