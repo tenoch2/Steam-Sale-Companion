@@ -5,6 +5,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
+import com.github.goive.steamapi.SteamApi;
+import com.github.goive.steamapi.data.SteamApp;
+import com.github.goive.steamapi.exceptions.SteamApiException;
 
 public class ListMaker {
 	public static void main(String[] args) {
@@ -14,21 +17,21 @@ public class ListMaker {
 		XStream xstream = new XStream();
 		List<Game> games = new ArrayList<Game>();
 		
-		final String xmlInput = "GameReadTest.xml";
+		SteamApi steam = new SteamApi("US");
+		SteamApp PCoast;
 		try{
-			xstream.alias("game",Game.class);
-			//xstream.alias("games",Games.class);
-			xstream.processAnnotations(Game.class);
-			//Game game = (Game) xstream.fromXML(xmlInput);
-			//games.add(game);
-			//final Games inputGames = (Games) xstream.fromXML(new File(xmlInput));
-		} catch(final Exception e) {
+			PCoast = steam.retrieve("Planet Coaster");
+			if(PCoast.isDiscounted()){
+				System.out.println("Planet Coaster is discounted");
+			} else {
+				System.out.println("naw, fam.");
+			}
+		} catch (SteamApiException e) {
 			e.printStackTrace();
 		}
 		
+		System.out.println("end API test");
 		
-		
-
 		GameOnSaleFactory gameFactory = new GameOnSaleFactory();
 		Game testGame = gameFactory.enlistGame("Moose Effect", 50.0, 0.1, 2);
 		Game testGame2 = gameFactory.enlistGame("Diabloo", 20.0, .4, 3);
@@ -56,7 +59,7 @@ public class ListMaker {
 		int costRate = 40;
 		int saleRate = 30;
 		int priorityRate = 10;
-
+		
 		System.out
 				.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", priority rate : " + priorityRate);
 
