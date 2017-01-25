@@ -20,7 +20,6 @@ public class Game_Retriever extends Thread implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Running Thread: " + threadName);
 		SteamApi steam = new SteamApi("US");
 		try {
 			for (String name : gameNames) {
@@ -29,7 +28,6 @@ public class Game_Retriever extends Thread implements Runnable {
 		} catch (SteamApiException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("finished " + threadName);
 	}
 
 	public List<SteamApp> getSteamGames(){
