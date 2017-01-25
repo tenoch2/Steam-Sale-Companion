@@ -6,7 +6,7 @@ import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
 
-public class Game_Retriever implements Runnable {
+public class Game_Retriever extends Thread implements Runnable {
 	private Thread t;
 	private List<String> gameNames;
 	private String threadName;
@@ -29,6 +29,7 @@ public class Game_Retriever implements Runnable {
 		} catch (SteamApiException e1) {
 			e1.printStackTrace();
 		}
+		System.out.println("finished " + threadName);
 	}
 
 	public List<SteamApp> getSteamGames(){

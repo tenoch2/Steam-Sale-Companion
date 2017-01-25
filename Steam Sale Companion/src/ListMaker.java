@@ -6,6 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
+import java.util.concurrent.TimeUnit;
+
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
@@ -14,37 +17,54 @@ public class ListMaker {
 	final static Charset ENCODING = StandardCharsets.UTF_8;
 
 	public static void main(String[] args) throws SteamApiException {
-
-		SteamApi steam = new SteamApi("US");
-		List<String> gameNames;
-		List<SteamApp> steamGames;
+		Stack<String> gameNames;
+		List<SteamApp> steamGames = new ArrayList<SteamApp>();
 		List<Game> results;
-
 		try {
 			gameNames = getGameNames("GameNames.txt");
-			steamGames = new ArrayList<SteamApp>();
-			for (String name : gameNames) {
-				steamGames.add(steam.retrieve(name));
+			List<String> gameNames1 = new ArrayList<String>();
+			List<String> gameNames2 = new ArrayList<String>();
+
+			int iterator = 0;
+			while (!gameNames.empty()) {
+				if (iterator < gameNames.size() / 2)
+					gameNames1.add(gameNames.pop());
+				else
+					gameNames2.add(gameNames.pop());
+				iterator++;
 			}
+
+			Game_Retriever gameFetcher1 = new Game_Retriever("fetcher1", gameNames1);
+			Game_Retriever gameFetcher2 = new Game_Retriever("fetcher2", gameNames2);
+			Game_Retriever[] threads = { gameFetcher1, gameFetcher2 };
+			gameFetcher1.start();
+			gameFetcher2.start();
+	        
+			for(int i = 0 ; i < threads.length; i++){
+				threads[i].join();
+			}
+			
+			steamGames = gameFetcher1.getSteamGames();
+			steamGames.addAll(gameFetcher2.getSteamGames());
+
 			results = scoreGames(steamGames);
 
 			for (Game game : results) {
 				System.out.printf("%s | score: %.2f \n", game.getSteamGame().getName(), game.getScore());
 			}
 
-		} catch (IOException e1) {
+		} catch (IOException | InterruptedException e1) {
 			e1.printStackTrace();
 		}
-
 	}
 
 	public static List<Game> scoreGames(List<SteamApp> games) {
 
 		List<Game> gameResults = new ArrayList<Game>();
 
-		double costRate = 40;
-		double saleRate = 20;
-		double reviewRate = 40;
+		int costRate = 40;
+		int saleRate = 20;
+		int reviewRate = 40;
 
 		System.out.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
 
@@ -52,7 +72,7 @@ public class ListMaker {
 		return gameResults;
 	}
 
-	private static List<Game> generateScores(List<SteamApp> games, double costRate, double saleRate, double reviewRate) {
+	private static List<Game> generateScores(List<SteamApp> games, int costRate, int saleRate, int reviewRate) {
 
 		double priceWeight;
 		double reviewWeight;
@@ -66,7 +86,7 @@ public class ListMaker {
 			saleWeight = (game.getPriceDiscountPercentage() / 100 * saleRate);
 
 			if (game.getMetacriticScore() != null)
-				reviewWeight = ((reviewRate / (double)game.getMetacriticScore())*100);
+				reviewWeight = (reviewRate / (double) game.getMetacriticScore());
 			else
 				reviewWeight = 0;
 
@@ -92,9 +112,12 @@ public class ListMaker {
 
 	}
 
-	public static List<String> getGameNames(String fileName) throws IOException {
+	public static Stack<String> getGameNames(String fileName) throws IOException {
 		Path path = Paths.get(fileName);
-		return Files.readAllLines(path, ENCODING);
+		List<String> names = Files.readAllLines(path, ENCODING);
+		Stack<String> results = new Stack<String>();
+		names.forEach(name -> results.push(name));
+		return results;
 	}
 
 }
