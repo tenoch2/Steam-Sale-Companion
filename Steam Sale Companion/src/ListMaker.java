@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
+
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
@@ -14,18 +16,25 @@ public class ListMaker {
 	final static Charset ENCODING = StandardCharsets.UTF_8;
 
 	public static void main(String[] args) throws SteamApiException {
-
-		SteamApi steam = new SteamApi("US");
-		List<String> gameNames;
+		Stack<String> gameNames;
 		List<SteamApp> steamGames;
 		List<Game> results;
-
 		try {
 			gameNames = getGameNames("GameNames.txt");
-			steamGames = new ArrayList<SteamApp>();
-			for (String name : gameNames) {
-				steamGames.add(steam.retrieve(name));
+			List<String> gameNames1 = new ArrayList<String>(); 
+			List<String> gameNames2 = new ArrayList<String>();
+			int iterator = 0;
+			while(!gameNames.empty()){
+				if(iterator < gameNames.size()/2)
+					gameNames1.add(gameNames.pop());
+				else
+					gameNames2.add(gameNames.pop());
+				iterator++;
 			}
+			Game_Retriever gameFetcher = new Game_Retriever("fetcher", gameNames);
+			
+			new Thread(gameFetcher).start();
+			steamGames = gameFetcher.getSteamGames();
 			results = scoreGames(steamGames);
 
 			for (Game game : results) {
@@ -35,8 +44,6 @@ public class ListMaker {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("end API test");
-
 	}
 
 	public static List<Game> scoreGames(List<SteamApp> games) {
@@ -93,9 +100,13 @@ public class ListMaker {
 
 	}
 
-	public static List<String> getGameNames(String fileName) throws IOException {
+	public static Stack<String> getGameNames(String fileName) throws IOException {
 		Path path = Paths.get(fileName);
-		return Files.readAllLines(path, ENCODING);
+		List<String> names = Files.readAllLines(path, ENCODING);
+		Stack<String> results = new Stack<String>();
+		names.forEach(name -> results.push(name));
+		return results;
 	}
+
 
 }
