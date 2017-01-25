@@ -35,7 +35,6 @@ public class ListMaker {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("end API test");
 
 	}
 
@@ -43,9 +42,9 @@ public class ListMaker {
 
 		List<Game> gameResults = new ArrayList<Game>();
 
-		int costRate = 40;
-		int saleRate = 20;
-		int reviewRate = 40;
+		double costRate = 40;
+		double saleRate = 20;
+		double reviewRate = 40;
 
 		System.out.println("cost rate : " + costRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
 
@@ -53,7 +52,7 @@ public class ListMaker {
 		return gameResults;
 	}
 
-	private static List<Game> generateScores(List<SteamApp> games, int costRate, int saleRate, int reviewRate) {
+	private static List<Game> generateScores(List<SteamApp> games, double costRate, double saleRate, double reviewRate) {
 
 		double priceWeight;
 		double reviewWeight;
@@ -67,7 +66,7 @@ public class ListMaker {
 			saleWeight = (game.getPriceDiscountPercentage() / 100 * saleRate);
 
 			if (game.getMetacriticScore() != null)
-				reviewWeight = (reviewRate / game.getMetacriticScore());
+				reviewWeight = ((reviewRate / (double)game.getMetacriticScore())*100);
 			else
 				reviewWeight = 0;
 
