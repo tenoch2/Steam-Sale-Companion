@@ -17,6 +17,8 @@ public class ListMaker {
 
 	public static void main(String[] args) throws SteamApiException {
 
+            MainBox box = new MainBox();
+            box.setVisible(true);
 		SteamApi steam = new SteamApi("US");
 		List<String> gameNames;
 		List<SteamApp> steamGames;
