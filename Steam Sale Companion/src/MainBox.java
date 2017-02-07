@@ -41,6 +41,7 @@ public class MainBox extends javax.swing.JFrame {
         outputPanel = new javax.swing.JPanel();
         buttonPanel = new javax.swing.JPanel();
         currentGamePanel = new javax.swing.JPanel();
+        gamePanel2 = new GamePanel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,7 +92,7 @@ public class MainBox extends javax.swing.JFrame {
                 .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         inputPanelLayout.setVerticalGroup(
             inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,11 +149,17 @@ public class MainBox extends javax.swing.JFrame {
         currentGamePanel.setLayout(currentGamePanelLayout);
         currentGamePanelLayout.setHorizontalGroup(
             currentGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 774, Short.MAX_VALUE)
+            .addGroup(currentGamePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(gamePanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         currentGamePanelLayout.setVerticalGroup(
             currentGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
+            .addGroup(currentGamePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(gamePanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -243,6 +250,7 @@ public class MainBox extends javax.swing.JFrame {
     private javax.swing.JTextField gameInputField;
     private javax.swing.JLabel gameLabel;
     private GamePanel gamePanel1;
+    private GamePanel gamePanel2;
     private javax.swing.JPanel inputPanel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel outputPanel;
