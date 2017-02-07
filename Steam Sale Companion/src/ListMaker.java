@@ -23,8 +23,11 @@ public class ListMaker {
 		List<Game> results;
 
 		try {
+			
 			gameNames = getGameNames("GameNames.txt");
 			steamGames = new ArrayList<SteamApp>();
+			
+			System.out.println("Retrieving game data...");
 			for (String name : gameNames) {
 				steamGames.add(steam.retrieve(name));
 			}
@@ -45,9 +48,10 @@ public class ListMaker {
 
 		List<Game> gameResults = new ArrayList<Game>();
 
-		double priceRate = 10;
+		double priceRate = 30;
 		double saleRate = 10;
-		double reviewRate = 80;
+		double reviewRate = 60;
+
 
 		System.out.println("price rate : " + priceRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
 
