@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.jsoup.Jsoup;
@@ -36,7 +37,6 @@ public class ListMaker {
 		Scanner inp = new Scanner(System.in);
 
 		do {
-
 			System.out.println("would you like to input games from wishlist or text file? \n" + "1 for wishlist \n"
 					+ "2 for text file");
 			usrChoice = inp.nextInt();
@@ -85,7 +85,7 @@ public class ListMaker {
 	public static void printGameList(List<Game> games) {
 		int i = 1;
 		for (Game game : games) {
-			System.out.printf("%d : %s | score: %.5f \n", i++, game.getSteamGame().getName(), game.getScore());
+			System.out.printf("%d : %s | score: %.3f \n", i++, game.getSteamGame().getName(), game.getScore());
 		}
 	}
 
@@ -164,8 +164,8 @@ public class ListMaker {
 				double score = game.getMetacriticScore();
 				if (score > highest)
 					highest = score;
-			} else
-				;
+			}
+
 		}
 		return highest;
 	}
@@ -176,7 +176,6 @@ public class ListMaker {
 		Document userUrl = Jsoup.connect(url).get();
 
 		for (Element row : userUrl.select(".wishlistRow")) {
-
 			final String title = row.select("h4").text();
 			results.add(title);
 		}
