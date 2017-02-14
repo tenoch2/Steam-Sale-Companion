@@ -8,42 +8,85 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
+import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
+import com.github.koraktor.steamcondenser.steam.community.GameStats;
+import com.github.koraktor.steamcondenser.steam.community.SteamGame;
+import com.github.koraktor.steamcondenser.steam.community.SteamId;
 
 public class ListMaker {
 	final static Charset ENCODING = StandardCharsets.UTF_8;
 
 	public static void main(String[] args) throws SteamApiException {
 
-            MainBox box = new MainBox();
-            box.setVisible(true);
 		SteamApi steam = new SteamApi("US");
-		List<String> gameNames;
+		List<String> gameNames = new ArrayList<String>();
 		List<SteamApp> steamGames;
 		List<Game> results;
+		SteamId id;
+		int usrChoice = 0;
+		Scanner inp = new Scanner(System.in);
 
-		try {
-			
-			gameNames = getGameNames("GameNames.txt");
-			steamGames = new ArrayList<SteamApp>();
-			
-			System.out.println("Retrieving game data...");
-			for (String name : gameNames) {
-				steamGames.add(steam.retrieve(name));
+		do {
+
+			System.out.println("would you like to input games from wishlist or text file? \n" + "1 for wishlist \n"
+					+ "2 for text file");
+			usrChoice = inp.nextInt();
+		} while (usrChoice != 1 && usrChoice != 2);
+
+		if (usrChoice == 1) {
+
+			try {
+
+				System.out.print("Input custom URL tag for steam user: ");
+
+				id = SteamId.create(inp.next());
+				String url = id.getBaseUrl() + "/wishlist";
+				gameNames = getGameNamesFromWishList(url);
+
+			} catch (SteamCondenserException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			results = scoreGames(steamGames);
-			int i = 1;
-			for (Game game : results) {
-				System.out.printf("%d : %s | score: %.5f \n", i, game.getSteamGame().getName(), game.getScore());
-				i++;
+		} else if (usrChoice == 2) {
+
+			try {
+
+				gameNames = getGameNames("GameNames.txt");
+
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
-			System.out.println("done");
-		} catch (IOException e1) {
-			e1.printStackTrace();
 		}
 
+		steamGames = new ArrayList<SteamApp>();
+		System.out.println("Retrieving game data...");
+
+		for (String name : gameNames) {
+			steamGames.add(steam.retrieve(name));
+		}
+
+		results = scoreGames(steamGames);
+		printGameList(results);
+
+		System.out.println("done");
+		inp.close();
+	}
+
+	public static void printGameList(List<Game> games) {
+		int i = 1;
+		for (Game game : games) {
+			System.out.printf("%d : %s | score: %.5f \n", i++, game.getSteamGame().getName(), game.getScore());
+		}
 	}
 
 	public static List<Game> scoreGames(List<SteamApp> games) {
@@ -53,7 +96,6 @@ public class ListMaker {
 		double priceRate = 30;
 		double saleRate = 10;
 		double reviewRate = 60;
-
 
 		System.out.println("price rate : " + priceRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
 
@@ -81,7 +123,8 @@ public class ListMaker {
 			saleWeight = (game.getPriceDiscountPercentage() / 100 * saleRate);
 
 			if (game.getMetacriticScore() != null)
-				reviewWeight = (Math.sqrt((Math.sqrt((highestScore / (double) game.getMetacriticScore()))))) * reviewRate;
+				reviewWeight = (Math.sqrt((Math.sqrt((highestScore / (double) game.getMetacriticScore())))))
+						* reviewRate;
 			else {
 				reviewWeight = 0;
 			}
@@ -125,6 +168,20 @@ public class ListMaker {
 				;
 		}
 		return highest;
+	}
+
+	public static List<String> getGameNamesFromWishList(String url) throws IOException {
+
+		List<String> results = new ArrayList<String>();
+		Document userUrl = Jsoup.connect(url).get();
+
+		for (Element row : userUrl.select(".wishlistRow")) {
+
+			final String title = row.select("h4").text();
+			results.add(title);
+		}
+
+		return results;
 	}
 
 	public static List<String> getGameNames(String fileName) throws IOException {
