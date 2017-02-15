@@ -8,13 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
@@ -75,16 +72,26 @@ public class ListMaker {
 			steamGames.add(steam.retrieve(name));
 		}
 
+		SteamApp portal = steam.retrieve(400);
+		System.out.println("portal's user review score: ");
+		try {
+			System.out.println(getGameUserScore(portal));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		results = scoreGames(steamGames);
 		printGameList(results);
 
 		System.out.println("done");
 		inp.close();
+
 	}
 
 	public static void printGameList(List<Game> games) {
 		int i = 1;
 		for (Game game : games) {
+
 			System.out.printf("%d : %s | score: %.3f \n", i++, game.getSteamGame().getName(), game.getScore());
 		}
 	}
@@ -93,9 +100,9 @@ public class ListMaker {
 
 		List<Game> gameResults = new ArrayList<Game>();
 
-		double priceRate = 30;
+		double priceRate = 50;
 		double saleRate = 10;
-		double reviewRate = 60;
+		double reviewRate = 40;
 
 		System.out.println("price rate : " + priceRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
 
@@ -131,11 +138,27 @@ public class ListMaker {
 
 			double score = priceWeight + saleWeight + reviewWeight;
 			Game newGame = new Game(game, score);
+
 			gameWithScores.add(newGame);
 		}
 
 		sortGameList(gameWithScores);
 		return gameWithScores;
+	}
+
+	public static int getGameUserScore(SteamApp game) throws IOException {
+		String target = " ";
+		Document gameUrl = Jsoup.connect("http://store.steampowered.com/app/" + game.getAppId() + "/").get();
+		
+		for (Element row : gameUrl.select(".summary column")) {
+			String[] reviewLine = row.select(".nonresponsive_hidden responsive_reviewdesc").text().split("//s+");
+			target = reviewLine[0].substring(0, 1);
+		}
+
+		if (!target.matches("^[1-9]\\d*$")) {
+			return 0;
+		} else
+			return Integer.parseInt(target);
 	}
 
 	public static List<Game> sortGameList(List<Game> games) {

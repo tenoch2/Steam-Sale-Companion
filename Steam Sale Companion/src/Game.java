@@ -1,8 +1,9 @@
 import com.github.goive.steamapi.data.SteamApp;
 
 public class Game {
-	SteamApp steamGame;
-	double score;
+	private SteamApp steamGame;
+	private double score;
+	private int userReviewScore;
 	
 	public Game(SteamApp steamGame, double score) {
 		this.steamGame = steamGame;
@@ -23,6 +24,14 @@ public class Game {
 
 	public void setScore(double score) {
 		this.score = score;
+	}
+
+	public int getUserReviewScore() {
+		return userReviewScore;
+	}
+
+	public void setUserReviewScore(int userReviewScore) {
+		this.userReviewScore = userReviewScore;
 	}
 	
 	
