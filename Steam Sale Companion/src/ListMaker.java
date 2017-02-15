@@ -8,13 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
@@ -85,7 +82,10 @@ public class ListMaker {
 	public static void printGameList(List<Game> games) {
 		int i = 1;
 		for (Game game : games) {
-			System.out.printf("%d : %s | score: %.3f \n", i++, game.getSteamGame().getName(), game.getScore());
+			System.out.printf("%d : %s | score: %.3f ", i++, game.getSteamGame().getName(), game.getScore());
+			if (game.getSteamGame().isFreeToPlay())
+				System.out.print(game.getSteamGame().getName() + " is free to play!");
+			System.out.println("");
 		}
 	}
 
@@ -93,12 +93,12 @@ public class ListMaker {
 
 		List<Game> gameResults = new ArrayList<Game>();
 
-		double priceRate = 30;
+		double priceRate = 50;
 		double saleRate = 10;
-		double reviewRate = 60;
+		double reviewRate = 40;
 
-		System.out.println("price rate : " + priceRate + ", sale Rate : " + saleRate + ", review rate : " + reviewRate);
-
+		System.out.println("price rate : " + (int) priceRate + "%, sale Rate : " + (int) saleRate + "%, review rate : "
+				+ (int) reviewRate + "%");
 		gameResults = generateScores(games, priceRate, saleRate, reviewRate);
 		return gameResults;
 	}
