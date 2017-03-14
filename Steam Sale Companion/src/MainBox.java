@@ -9,7 +9,7 @@ import java.awt.FlowLayout;
 
 /**
  *
- * @author micha
+ * @author michael
  */
 public class MainBox extends javax.swing.JFrame {
 
