@@ -33,45 +33,6 @@ public class ListMaker {
 		int usrChoice = 0;
 		Scanner inp = new Scanner(System.in);
 
-		do {
-			System.out.println("would you like to input games from wishlist or text file? \n" + "1 for wishlist \n"
-					+ "2 for text file");
-			usrChoice = inp.nextInt();
-		} while (usrChoice != 1 && usrChoice != 2);
-
-		if (usrChoice == 1) {
-
-			try {
-
-				System.out.print("Input custom URL tag for steam user: ");
-
-				id = SteamId.create(inp.next());
-				String url = id.getBaseUrl() + "/wishlist";
-				gameNames = getGameNamesFromWishList(url);
-
-			} catch (SteamCondenserException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else if (usrChoice == 2) {
-
-			try {
-
-				gameNames = getGameNames("GameNames.txt");
-
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-
-		steamGames = new ArrayList<SteamApp>();
-		System.out.println("Retrieving game data...");
-
-		for (String name : gameNames) {
-			steamGames.add(steam.retrieve(name));
-		}
-
 		SteamApp portal = steam.retrieve(400);
 		System.out.println("portal's user review score: ");
 		try {
@@ -79,9 +40,6 @@ public class ListMaker {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		results = scoreGames(steamGames);
-		printGameList(results);
 
 		System.out.println("done");
 		inp.close();
@@ -149,7 +107,7 @@ public class ListMaker {
 	public static int getGameUserScore(SteamApp game) throws IOException {
 		String target = " ";
 		Document gameUrl = Jsoup.connect("http://store.steampowered.com/app/" + game.getAppId() + "/").get();
-		
+		System.out.println("");
 		for (Element row : gameUrl.select(".summary column")) {
 			String[] reviewLine = row.select(".nonresponsive_hidden responsive_reviewdesc").text().split("//s+");
 			target = reviewLine[0].substring(0, 1);
