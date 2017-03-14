@@ -20,44 +20,32 @@ import javax.swing.JPanel;
  */
 public class MainBox extends javax.swing.JFrame {
 
-    SteamApi steam = new SteamApi("US");
+    //Creates variables steam (the steam API), game (a steam App), and the list 
+    //of Steam Apps for prccessing
+    SteamApi steam; 
     SteamApp game;
     ArrayList<SteamApp> gameList;
     
     /**
-     * Creates new form MainBox
+     * Creates new form MainBox, initializes steam and gameList
+     * and also adds change listeners to the sliders
      */
     public MainBox() {
         
         initComponents();
+        steam = new SteamApi("US");
         priceSlider.addChangeListener(new SlideListener(priceField, priceSlider));
         saleSlider.addChangeListener(new SlideListener(saleField, saleSlider));
         criticSlider.addChangeListener(new SlideListener(criticField, criticSlider));
         gameDisplayPanel.setLayout(new BoxLayout(gameDisplayPanel, BoxLayout.Y_AXIS));
         currentGame.setMainBox(this);
         gameList = new ArrayList();
-        
-        try
-        {
-//            gameList.add(steam.retrieve("planet coaster"));
-//            gameList.add(steam.retrieve("minecraft"));
-//            gameList.add(steam.retrieve("portal"));
-//            gameList.add(steam.retrieve("salt"));
-//            gameList.add(steam.retrieve("for honor"));
-//            gameList.add(steam.retrieve("salt"));
-//            gameList.add(steam.retrieve("salt"));
-            //gameList.add(steam.retrieve("salt"));
-            //gameList.add(steam.retrieve("for honor"));
-            //gameList.add(steam.retrieve("salt"));
-            //gameList.add(steam.retrieve("salt"));
-            fillGDP();
-        }
-        catch(Throwable t)
-        {
-            
-        }
     }
 
+    /**
+    *   adds all games currently in game list to the
+    * gameDisplayPanel
+    */
     private void fillGDP()
     {
         for(SteamApp app : gameList)
@@ -395,22 +383,33 @@ public class MainBox extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * sets the current game panel to display the
+     * current game
+     * @param evt 
+     */
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-           setGamePanel(currentGame);
+        setGamePanel(currentGame);
     }//GEN-LAST:event_searchButtonMouseClicked
 
-    private void setGamePanel(GamePanel gp)
+    /**
+     * sets the gamePanel to display name, price, discount
+     * and description, sets these values to "Game not found"
+     * if the app can not be found
+     * @param gamePanel 
+     */
+    private void setGamePanel(GamePanel gamePanel)
     {
         try
         {
             SteamApp app = steam.retrieve(gameInputField.getText());
-            gp.setGame(app);
+            gamePanel.setGame(app);
         }
         catch(Throwable t)
         {
-            gp.setName("-Game not found-");
-            gp.setCost("--.--");
-            gp.setDiscount("---"); 
+            gamePanel.setName("-Game not found-");
+            gamePanel.setCost("--.--");
+            gamePanel.setDiscount("---"); 
         } 
     }
     
@@ -418,10 +417,18 @@ public class MainBox extends javax.swing.JFrame {
         
     }//GEN-LAST:event_currentGamePanelComponentAdded
 
+    /**
+     * 
+     * @param evt 
+     */
     private void calculateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateBtnActionPerformed
-        resultTextArea.append("Hello");
+        //TODO add ranking system algorithm
     }//GEN-LAST:event_calculateBtnActionPerformed
 
+    /**
+     * clears the output display area
+     * @param evt 
+     */
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
         resultTextArea.setText("");
     }//GEN-LAST:event_clearBtnActionPerformed
@@ -490,6 +497,11 @@ public class MainBox extends javax.swing.JFrame {
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
     
+    /**
+     * is called when the current game panel button
+     * is clicked and adds the game/app to the gameList
+     * @param app 
+     */
     public void currentGameAddBtnClicked(SteamApp app)
     {   
         //if(!gameList.contains(app))
@@ -502,7 +514,12 @@ public class MainBox extends javax.swing.JFrame {
         //}
         
     }
-    
+    /**
+     * is called from a gameListPanel and removes the
+     * game in the gameListPanel from the gameList
+     * @param app
+     * @param gp 
+     */
     public void removeGame(SteamApp app, GameListPanel gp)
     {
         gameList.remove(app);

@@ -1,6 +1,12 @@
 
 public class HTMLDecoder 
 {
+    /**
+     * returns the input String with the HTML
+     * tags accounted for in format or removes them
+     * @param input
+     * @return 
+     */
     public static String decode(String input)
     {
         String[] split = input.split(" ");
@@ -14,6 +20,12 @@ public class HTMLDecoder
         return result;
     }
     
+    /**
+     * returns the provided string with the HTML
+     * tags accounted for and dealt with 
+     * @param string
+     * @return 
+     */
     private static String tagCheck(String string)
     {
         tagAssignment(string, "<br>", "\n");
@@ -25,6 +37,14 @@ public class HTMLDecoder
         return string;
     }
     
+    /**
+     * returns the input string with the HTML tags provided with
+     * with the provided string to replace them
+     * @param string
+     * @param tag
+     * @param replaceWith
+     * @return 
+     */
     private static String tagAssignment(String string, String tag, String replaceWith)
     {
         String result = string;

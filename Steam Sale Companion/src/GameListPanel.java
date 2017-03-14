@@ -13,6 +13,7 @@ import com.github.goive.steamapi.data.SteamApp;
  */
 public class GameListPanel extends javax.swing.JPanel {
 
+    //creats a SteamApp and MainBox
     SteamApp app;
     MainBox mb;
     
@@ -23,6 +24,12 @@ public class GameListPanel extends javax.swing.JPanel {
         initComponents();
     }
     
+    /**
+     * initializes the GameListPanel with the SteamApp and a reference
+     * to the MainBox and sets the textFields to the appropriate values
+     * @param app
+     * @param mb 
+     */
     public GameListPanel(SteamApp app, MainBox mb) {
         initComponents();
         this.app = app;
@@ -96,6 +103,11 @@ public class GameListPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * delegates to the MainBox to handle the removal of
+     * this SteamApp
+     * @param evt 
+     */
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         mb.removeGame(app, this);
     }//GEN-LAST:event_removeBtnActionPerformed

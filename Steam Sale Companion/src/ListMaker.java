@@ -19,6 +19,8 @@ public class ListMaker {
 
             MainBox box = new MainBox();
             box.setVisible(true);
+            
+    //Used for testing purposes and proof of concept only        
 //		SteamApi steam = new SteamApi("US");
 //		List<String> gameNames;
 //		List<SteamApp> steamGames;

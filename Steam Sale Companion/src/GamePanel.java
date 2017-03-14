@@ -12,7 +12,9 @@ import com.github.goive.steamapi.data.SteamApp;
  * @author micha
  */
 public class GamePanel extends javax.swing.JPanel {
-    
+    /**
+     * Creates SteamApp and MainBox
+     */
     private MainBox mb;
     SteamApp game;
     
@@ -23,6 +25,10 @@ public class GamePanel extends javax.swing.JPanel {
         initComponents();
     }
 
+    /**
+     * Initializes GamePanel with the SteamApp provided 
+     * @param app 
+     */
     public GamePanel(SteamApp app)
     {
         initComponents();
@@ -139,10 +145,19 @@ public class GamePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * delegates to the MainBox to handle the adding of game
+     * @param evt 
+     */
     private void addBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnMouseClicked
         mb.currentGameAddBtnClicked(game);
     }//GEN-LAST:event_addBtnMouseClicked
 
+    /**
+    * Sets the stored value game to the provided SteamApp and
+    * sets the textFields accordingly to the new game
+    * @param app 
+    */
     public void setGame(SteamApp app)
     {
         game = app;
@@ -152,36 +167,59 @@ public class GamePanel extends javax.swing.JPanel {
         setDescription(app.getAboutTheGame());
     }
     
+    /**
+     * returns the stored SteamApp
+     * @return 
+     */
     public SteamApp getGame()
     {
         return game;
     }
     
-    public void addToGameList()
-    {
-        
-    }
-    
+    /**
+     * sets and stores a reference to the MainBox
+     * @param mb 
+     */
     public void setMainBox(MainBox mb)
     {
         this.mb = mb;
     }
     
+    /**
+     * sets the Title text field to the String
+     * provided
+     * @param name 
+     */
     public void setName(String name)
     {
         gameNameLabel.setText(name);
     }
     
+    /**
+     * sets the Cost Text Field to the String
+     * provided
+     * @param cost 
+     */
     public void setCost(String cost)
     {
         costLabel.setText("$" + cost);
     }
     
+    /**
+     * sets the Discount Text Field to the String
+     * provided
+     * @param disc 
+     */
     public void setDiscount(String disc)
     {
         discountLabel.setText("%" + disc);
     }
     
+    /**
+     * sets the Description Text Area to the String 
+     * provided
+     * @param discription 
+     */
     public void setDescription(String discription)
     {
         descriptionBox.setText(HTMLDecoder.decode(discription));
