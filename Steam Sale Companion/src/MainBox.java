@@ -1,5 +1,12 @@
 
+import com.github.goive.steamapi.SteamApi;
+import com.github.goive.steamapi.data.SteamApp;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,14 +20,52 @@ import java.awt.FlowLayout;
  */
 public class MainBox extends javax.swing.JFrame {
 
+    SteamApi steam = new SteamApi("US");
+    SteamApp game;
+    ArrayList<SteamApp> gameList;
+    
     /**
      * Creates new form MainBox
      */
     public MainBox() {
         
         initComponents();
+        priceSlider.addChangeListener(new SlideListener(priceField, priceSlider));
+        saleSlider.addChangeListener(new SlideListener(saleField, saleSlider));
+        criticSlider.addChangeListener(new SlideListener(criticField, criticSlider));
+        gameDisplayPanel.setLayout(new BoxLayout(gameDisplayPanel, BoxLayout.Y_AXIS));
+        currentGame.setMainBox(this);
+        gameList = new ArrayList();
+        
+        try
+        {
+//            gameList.add(steam.retrieve("planet coaster"));
+//            gameList.add(steam.retrieve("minecraft"));
+//            gameList.add(steam.retrieve("portal"));
+//            gameList.add(steam.retrieve("salt"));
+//            gameList.add(steam.retrieve("for honor"));
+//            gameList.add(steam.retrieve("salt"));
+//            gameList.add(steam.retrieve("salt"));
+            //gameList.add(steam.retrieve("salt"));
+            //gameList.add(steam.retrieve("for honor"));
+            //gameList.add(steam.retrieve("salt"));
+            //gameList.add(steam.retrieve("salt"));
+            fillGDP();
+        }
+        catch(Throwable t)
+        {
+            
+        }
     }
 
+    private void fillGDP()
+    {
+        for(SteamApp app : gameList)
+        {
+            gameDisplayPanel.add(new GameListPanel(app, this));
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,29 +75,32 @@ public class MainBox extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        gamePanel1 = new GamePanel();
         inputPanel = new javax.swing.JPanel();
         gameLabel = new javax.swing.JLabel();
         gameInputField = new javax.swing.JTextField();
-        addButton = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
-        gameDisplayPanel = new javax.swing.JScrollPane();
         outputPanel = new javax.swing.JPanel();
+        priceSlider = new javax.swing.JSlider();
+        priceLable = new javax.swing.JLabel();
+        priceField = new javax.swing.JTextField();
+        SaleLabel = new javax.swing.JLabel();
+        saleSlider = new javax.swing.JSlider();
+        saleField = new javax.swing.JTextField();
+        MetaCritLAble = new javax.swing.JLabel();
+        criticSlider = new javax.swing.JSlider();
+        criticField = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        resultTextArea = new javax.swing.JTextArea();
+        calculateBtn = new javax.swing.JButton();
+        clearBtn = new javax.swing.JButton();
         buttonPanel = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         currentGamePanel = new javax.swing.JPanel();
-        gamePanel2 = new GamePanel();
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 763, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 515, Short.MAX_VALUE)
-        );
+        currentGame = new GamePanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        gameDisplayPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Steam-Sale Companion");
@@ -63,12 +111,7 @@ public class MainBox extends javax.swing.JFrame {
         gameLabel.setFont(new java.awt.Font("Serif", 0, 20)); // NOI18N
         gameLabel.setText("Game name:");
 
-        gameInputField.setFont(new java.awt.Font("Serif", 0, 11)); // NOI18N
-
-        addButton.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        addButton.setText("Add");
-        addButton.setMaximumSize(new java.awt.Dimension(63, 35));
-        addButton.setPreferredSize(new java.awt.Dimension(63, 35));
+        gameInputField.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
 
         searchButton.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         searchButton.setText("Search");
@@ -87,12 +130,10 @@ public class MainBox extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(gameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(gameInputField, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(gameInputField, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         inputPanelLayout.setVerticalGroup(
             inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,41 +142,169 @@ public class MainBox extends javax.swing.JFrame {
                 .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(gameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(inputPanelLayout.createSequentialGroup()
-                        .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(gameInputField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 1, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
-        gameDisplayPanel.setBackground(new java.awt.Color(255, 255, 255));
-
         outputPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        priceSlider.setMajorTickSpacing(10);
+        priceSlider.setMinorTickSpacing(2);
+        priceSlider.setPaintTicks(true);
+        priceSlider.setToolTipText("");
+        priceSlider.setValue(0);
+
+        priceLable.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
+        priceLable.setText("Price");
+
+        priceField.setEditable(false);
+        priceField.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+
+        SaleLabel.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
+        SaleLabel.setText("Sale");
+
+        saleSlider.setMajorTickSpacing(10);
+        saleSlider.setMinorTickSpacing(2);
+        saleSlider.setPaintTicks(true);
+        saleSlider.setToolTipText("");
+        saleSlider.setValue(0);
+
+        saleField.setEditable(false);
+        saleField.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+
+        MetaCritLAble.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
+        MetaCritLAble.setText("Metacritic Score");
+
+        criticSlider.setMajorTickSpacing(10);
+        criticSlider.setMinorTickSpacing(2);
+        criticSlider.setPaintTicks(true);
+        criticSlider.setToolTipText("");
+        criticSlider.setValue(0);
+
+        criticField.setEditable(false);
+        criticField.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+
+        resultTextArea.setEditable(false);
+        resultTextArea.setColumns(20);
+        resultTextArea.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        resultTextArea.setLineWrap(true);
+        resultTextArea.setRows(5);
+        resultTextArea.setWrapStyleWord(true);
+        resultTextArea.setBorder(null);
+        jScrollPane2.setViewportView(resultTextArea);
+
+        calculateBtn.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        calculateBtn.setText("Calculate");
+        calculateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calculateBtnActionPerformed(evt);
+            }
+        });
+
+        clearBtn.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        clearBtn.setLabel("Clear");
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout outputPanelLayout = new javax.swing.GroupLayout(outputPanel);
         outputPanel.setLayout(outputPanelLayout);
         outputPanelLayout.setHorizontalGroup(
             outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 396, Short.MAX_VALUE)
+            .addGroup(outputPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(priceSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(outputPanelLayout.createSequentialGroup()
+                        .addComponent(priceLable, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(saleSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(outputPanelLayout.createSequentialGroup()
+                        .addComponent(SaleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(saleField, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(criticSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(outputPanelLayout.createSequentialGroup()
+                        .addComponent(MetaCritLAble, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(criticField, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outputPanelLayout.createSequentialGroup()
+                        .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(calculateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         outputPanelLayout.setVerticalGroup(
             outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(outputPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(priceLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(priceField))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(priceSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(SaleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saleField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saleSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(MetaCritLAble, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(criticField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(criticSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(calculateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(clearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         buttonPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        jButton1.setText("jButton1");
+
+        jButton2.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
+        jButton2.setText("Import");
+
+        jButton3.setText("jButton1");
 
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         currentGamePanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -151,16 +320,41 @@ public class MainBox extends javax.swing.JFrame {
             currentGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(currentGamePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(gamePanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(currentGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         currentGamePanelLayout.setVerticalGroup(
             currentGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(currentGamePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(gamePanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, currentGamePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(currentGame, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane1.setAutoscrolls(true);
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(774, 522));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(774, 522));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(774, 522));
+
+        gameDisplayPanel.setBackground(new java.awt.Color(204, 204, 204));
+        gameDisplayPanel.setAutoscrolls(true);
+        gameDisplayPanel.setMinimumSize(new java.awt.Dimension(774, 522));
+        gameDisplayPanel.setPreferredSize(new java.awt.Dimension(770, 500));
+
+        javax.swing.GroupLayout gameDisplayPanelLayout = new javax.swing.GroupLayout(gameDisplayPanel);
+        gameDisplayPanel.setLayout(gameDisplayPanelLayout);
+        gameDisplayPanelLayout.setHorizontalGroup(
+            gameDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 774, Short.MAX_VALUE)
+        );
+        gameDisplayPanelLayout.setVerticalGroup(
+            gameDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 522, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(gameDisplayPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -168,12 +362,14 @@ public class MainBox extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(inputPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(gameDisplayPanel, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(currentGamePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(currentGamePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(inputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(outputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -184,15 +380,15 @@ public class MainBox extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(outputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(inputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(currentGamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(gameDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(outputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -200,13 +396,36 @@ public class MainBox extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-        GamePanel gp = new GamePanel();
-        currentGamePanel.add(gp);
+           setGamePanel(currentGame);
     }//GEN-LAST:event_searchButtonMouseClicked
 
+    private void setGamePanel(GamePanel gp)
+    {
+        try
+        {
+            SteamApp app = steam.retrieve(gameInputField.getText());
+            gp.setGame(app);
+        }
+        catch(Throwable t)
+        {
+            gp.setName("-Game not found-");
+            gp.setCost("--.--");
+            gp.setDiscount("---"); 
+        } 
+    }
+    
     private void currentGamePanelComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_currentGamePanelComponentAdded
+        
     }//GEN-LAST:event_currentGamePanelComponentAdded
 
+    private void calculateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateBtnActionPerformed
+        resultTextArea.append("Hello");
+    }//GEN-LAST:event_calculateBtnActionPerformed
+
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        resultTextArea.setText("");
+    }//GEN-LAST:event_clearBtnActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -243,17 +462,52 @@ public class MainBox extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addButton;
+    private javax.swing.JLabel MetaCritLAble;
+    private javax.swing.JLabel SaleLabel;
     private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton calculateBtn;
+    private javax.swing.JButton clearBtn;
+    private javax.swing.JTextField criticField;
+    private javax.swing.JSlider criticSlider;
+    private GamePanel currentGame;
     private javax.swing.JPanel currentGamePanel;
-    private javax.swing.JScrollPane gameDisplayPanel;
+    public javax.swing.JPanel gameDisplayPanel;
     private javax.swing.JTextField gameInputField;
     private javax.swing.JLabel gameLabel;
-    private GamePanel gamePanel1;
-    private GamePanel gamePanel2;
     private javax.swing.JPanel inputPanel;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    public javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel outputPanel;
+    private javax.swing.JTextField priceField;
+    private javax.swing.JLabel priceLable;
+    private javax.swing.JSlider priceSlider;
+    private javax.swing.JTextArea resultTextArea;
+    private javax.swing.JTextField saleField;
+    private javax.swing.JSlider saleSlider;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
+    
+    public void currentGameAddBtnClicked(SteamApp app)
+    {   
+        //if(!gameList.contains(app))
+        //{
+        gameList.add(app);
+        //gameDisplayPanel.removeAll();
+        
+        //fillGDP();
+        gameDisplayPanel.repaint();
+        //}
+        
+    }
+    
+    public void removeGame(SteamApp app, GameListPanel gp)
+    {
+        gameList.remove(app);
+        gameDisplayPanel.remove(gp);
+        //fillGDP();
+        gameDisplayPanel.repaint();
+    }
 }
