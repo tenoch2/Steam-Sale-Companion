@@ -6,7 +6,9 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,6 +27,7 @@ public class MainBox extends javax.swing.JFrame {
     SteamApi steam; 
     SteamApp game;
     ArrayList<SteamApp> gameList;
+    DefaultListModel lm;
     
     /**
      * Creates new form MainBox, initializes steam and gameList
@@ -37,9 +40,14 @@ public class MainBox extends javax.swing.JFrame {
         priceSlider.addChangeListener(new SlideListener(priceField, priceSlider));
         saleSlider.addChangeListener(new SlideListener(saleField, saleSlider));
         criticSlider.addChangeListener(new SlideListener(criticField, criticSlider));
-        gameDisplayPanel.setLayout(new BoxLayout(gameDisplayPanel, BoxLayout.Y_AXIS));
+        priceField.addKeyListener(new TextFieldListener(priceField, priceSlider));
+        saleField.addKeyListener(new TextFieldListener(saleField, saleSlider));
+        criticField.addKeyListener(new TextFieldListener(criticField, criticSlider));
+        //gameDisplayPanel.setLayout(new BoxLayout(gameDisplayPanel, BoxLayout.Y_AXIS));
         currentGame.setMainBox(this);
         gameList = new ArrayList();
+        lm = new DefaultListModel();
+        addedGames.setModel(lm);
     }
 
     /**
@@ -50,7 +58,7 @@ public class MainBox extends javax.swing.JFrame {
     {
         for(SteamApp app : gameList)
         {
-            gameDisplayPanel.add(new GameListPanel(app, this));
+            //gameDisplayPanel.add(new GameListPanel(app, this));
         }
     }
     
@@ -88,7 +96,7 @@ public class MainBox extends javax.swing.JFrame {
         currentGamePanel = new javax.swing.JPanel();
         currentGame = new GamePanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        gameDisplayPanel = new javax.swing.JPanel();
+        addedGames = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Steam-Sale Companion");
@@ -118,7 +126,7 @@ public class MainBox extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(gameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(gameInputField, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                .addComponent(gameInputField)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -148,7 +156,6 @@ public class MainBox extends javax.swing.JFrame {
         priceLable.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
         priceLable.setText("Price");
 
-        priceField.setEditable(false);
         priceField.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
 
         SaleLabel.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
@@ -160,7 +167,6 @@ public class MainBox extends javax.swing.JFrame {
         saleSlider.setToolTipText("");
         saleSlider.setValue(0);
 
-        saleField.setEditable(false);
         saleField.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
 
         MetaCritLAble.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
@@ -172,7 +178,6 @@ public class MainBox extends javax.swing.JFrame {
         criticSlider.setToolTipText("");
         criticSlider.setValue(0);
 
-        criticField.setEditable(false);
         criticField.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
 
         resultTextArea.setEditable(false);
@@ -251,11 +256,11 @@ public class MainBox extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(criticSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(calculateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(clearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(calculateBtn)
+                    .addComponent(clearBtn))
                 .addContainerGap())
         );
 
@@ -308,41 +313,21 @@ public class MainBox extends javax.swing.JFrame {
             currentGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(currentGamePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(currentGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(currentGame, javax.swing.GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
                 .addContainerGap())
         );
         currentGamePanelLayout.setVerticalGroup(
             currentGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, currentGamePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(currentGame, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(currentGame, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.setAutoscrolls(true);
-        jScrollPane1.setMaximumSize(new java.awt.Dimension(774, 522));
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(774, 522));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(774, 522));
-
-        gameDisplayPanel.setBackground(new java.awt.Color(204, 204, 204));
-        gameDisplayPanel.setAutoscrolls(true);
-        gameDisplayPanel.setMinimumSize(new java.awt.Dimension(774, 522));
-        gameDisplayPanel.setPreferredSize(new java.awt.Dimension(770, 500));
-
-        javax.swing.GroupLayout gameDisplayPanelLayout = new javax.swing.GroupLayout(gameDisplayPanel);
-        gameDisplayPanel.setLayout(gameDisplayPanelLayout);
-        gameDisplayPanelLayout.setHorizontalGroup(
-            gameDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 774, Short.MAX_VALUE)
-        );
-        gameDisplayPanelLayout.setVerticalGroup(
-            gameDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 522, Short.MAX_VALUE)
-        );
-
-        jScrollPane1.setViewportView(gameDisplayPanel);
+        addedGames.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
+        addedGames.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        addedGames.setToolTipText("");
+        jScrollPane1.setViewportView(addedGames);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -350,12 +335,10 @@ public class MainBox extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(currentGamePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(inputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(currentGamePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(inputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(outputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -376,7 +359,7 @@ public class MainBox extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(currentGamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
 
@@ -471,6 +454,7 @@ public class MainBox extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel MetaCritLAble;
     private javax.swing.JLabel SaleLabel;
+    private javax.swing.JList<GameListPanel> addedGames;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton calculateBtn;
     private javax.swing.JButton clearBtn;
@@ -478,14 +462,13 @@ public class MainBox extends javax.swing.JFrame {
     private javax.swing.JSlider criticSlider;
     private GamePanel currentGame;
     private javax.swing.JPanel currentGamePanel;
-    public javax.swing.JPanel gameDisplayPanel;
     private javax.swing.JTextField gameInputField;
     private javax.swing.JLabel gameLabel;
     private javax.swing.JPanel inputPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    public javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel outputPanel;
     private javax.swing.JTextField priceField;
@@ -504,15 +487,9 @@ public class MainBox extends javax.swing.JFrame {
      */
     public void currentGameAddBtnClicked(SteamApp app)
     {   
-        //if(!gameList.contains(app))
-        //{
-        gameList.add(app);
-        //gameDisplayPanel.removeAll();
-        
-        //fillGDP();
-        gameDisplayPanel.repaint();
-        //}
-        
+        if(!lm.contains(app.getName()))
+            lm.addElement(app.getName());
+        System.out.println("hello");
     }
     /**
      * is called from a gameListPanel and removes the
@@ -523,8 +500,8 @@ public class MainBox extends javax.swing.JFrame {
     public void removeGame(SteamApp app, GameListPanel gp)
     {
         gameList.remove(app);
-        gameDisplayPanel.remove(gp);
+        //gameDisplayPanel.remove(gp);
         //fillGDP();
-        gameDisplayPanel.repaint();
+        //gameDisplayPanel.repaint();
     }
 }

@@ -1,6 +1,13 @@
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+
+
 public class HTMLDecoder 
 {
+    private static final HashMap<String, String> codex = getCodex();
+    
     /**
      * returns the input String with the HTML
      * tags accounted for in format or removes them
@@ -13,43 +20,38 @@ public class HTMLDecoder
         String result = "";
         for(String string : split)
         {
-            string = tagCheck(string);
-            result += string + " ";
+            String inter = "";
+            if(string.contains("<"))
+                inter = tagCheck(string);
+            result += inter;
         }
         
         return result;
     }
     
-    /**
-     * returns the provided string with the HTML
-     * tags accounted for and dealt with 
-     * @param string
-     * @return 
-     */
     private static String tagCheck(String string)
     {
-        tagAssignment(string, "<br>", "\n");
-        tagAssignment(string, "<li>", "");
-        tagAssignment(string, "</li>", "");
-        
-        
-        
-        return string;
-    }
-    
-    /**
-     * returns the input string with the HTML tags provided with
-     * with the provided string to replace them
-     * @param string
-     * @param tag
-     * @param replaceWith
-     * @return 
-     */
-    private static String tagAssignment(String string, String tag, String replaceWith)
-    {
         String result = string;
-        if(string.contains(tag))
-            result = string.replace(tag, replaceWith);
+        Set s = codex.keySet();
+        ArrayList<String> l = (ArrayList) s;
+        for(String key : l)
+        {
+            if(result.contains(key))
+                result.replace(key, codex.get(key));
+        }
+        
         return result;
+    }
+
+    
+    public static HashMap getCodex()
+    {
+        HashMap hm = new HashMap();
+        
+        hm.put("<br>", "\n");
+        hm.put("<li>", "");
+        hm.put("</li>", "");
+        
+        return hm;
     }
 }
