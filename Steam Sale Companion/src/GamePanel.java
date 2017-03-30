@@ -93,6 +93,7 @@ public class GamePanel extends javax.swing.JPanel {
         descriptionBox.setRows(1);
         descriptionBox.setToolTipText("");
         descriptionBox.setWrapStyleWord(true);
+        descriptionBox.setAutoscrolls(false);
         descriptionBox.setMaximumSize(new java.awt.Dimension(571, 132));
         descriptionBox.setMinimumSize(new java.awt.Dimension(571, 132));
         jScrollPane1.setViewportView(descriptionBox);
