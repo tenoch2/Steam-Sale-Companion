@@ -173,8 +173,8 @@ public class GamePanel extends javax.swing.JPanel {
     public void setGame(SteamApp app)
     {
         game = app;
-        setName(app.getName());
-        setCost("" + (float)app.getPrice());
+        setGameName(app.getName());
+        setCost(app.getPrice());
         setDiscount("" + app.getPriceDiscountPercentage());
         setDescription(app.getAboutTheGame());
     }
@@ -202,7 +202,7 @@ public class GamePanel extends javax.swing.JPanel {
      * provided
      * @param name 
      */
-    public void setName(String name)
+    public void setGameName(String name)
     {
         gameNameLabel.setText(name);
     }
@@ -215,6 +215,16 @@ public class GamePanel extends javax.swing.JPanel {
     public void setCost(String cost)
     {
         costLabel.setText("$" + cost);
+    }
+    
+    /**
+     * sets the Cost Text Field to the String
+     * provided
+     * @param cost 
+     */
+    public void setCost(double cost)
+    {
+        setCost(String.format("%.2f", cost));
     }
     
     /**
