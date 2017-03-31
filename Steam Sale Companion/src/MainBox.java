@@ -439,7 +439,7 @@ public class MainBox extends javax.swing.JFrame {
         }
         catch(Throwable t)
         {
-            gamePanel.setName("-Game not found-");
+            gamePanel.setGameName("-Game not found-");
             gamePanel.setCost("--.--");
             gamePanel.setDiscount("---"); 
         } 
