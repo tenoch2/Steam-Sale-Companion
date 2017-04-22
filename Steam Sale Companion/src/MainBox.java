@@ -1,7 +1,10 @@
 
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.swing.DefaultListModel;
 
@@ -18,7 +21,7 @@ import javax.swing.DefaultListModel;
 public class MainBox extends javax.swing.JFrame {
 
     //Creates variables steam (the steam API), game (a steam App), and the list 
-    //of Steam Apps for prccessing
+    //of Steam Apps for proccessing
     SteamApi steam; 
     SteamApp game;
     ArrayList<SteamApp> gameList;
@@ -456,8 +459,14 @@ public class MainBox extends javax.swing.JFrame {
     private void calculateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateBtnActionPerformed
         //TODO add ranking system algorithm
         clearBtnActionPerformed(evt);
-        gameList.stream().forEach((SteamApp app) -> {
-            resultTextArea.append(app.getName() + "\n");
+        DecimalFormat df = new DecimalFormat("#.##");
+        ListMaker listMaker = new ListMaker(gameList);
+
+        List<Game> games = ListMaker.generateScores(gameList, priceSlider.getValue(), saleSlider.getValue(), criticSlider.getValue());
+        
+        
+        games.stream().forEach((game) -> {
+            resultTextArea.append(game.getSteamGame().getName() + " " + df.format(game.getScore()) + "\n");
         });
     }//GEN-LAST:event_calculateBtnActionPerformed
 

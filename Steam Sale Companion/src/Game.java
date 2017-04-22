@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 import com.github.goive.steamapi.data.SteamApp;
 
 //plain jane data structure class
@@ -38,6 +40,7 @@ public class Game {
      * @return 
      */
     public double getScore() {
+    	
             return score;
     }
 
