@@ -312,7 +312,6 @@ public class MainBox extends javax.swing.JFrame {
         resultTextArea.setEditable(false);
         resultTextArea.setColumns(20);
         resultTextArea.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        resultTextArea.setLineWrap(true);
         resultTextArea.setRows(5);
         resultTextArea.setWrapStyleWord(true);
         resultTextArea.setBorder(null);
@@ -485,7 +484,7 @@ public class MainBox extends javax.swing.JFrame {
         
         
         games.stream().forEach((game) -> {
-            resultTextArea.append(game.getSteamGame().getName() + " " + df.format(game.getScore()) + "\n");
+            resultTextArea.append(game.getSteamGame().getName() + "\t- " + df.format(game.getScore()) + "\n");
         });
     }//GEN-LAST:event_calculateBtnActionPerformed
 
