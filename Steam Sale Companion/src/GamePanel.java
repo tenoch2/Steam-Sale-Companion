@@ -1,12 +1,7 @@
 
 import com.github.goive.steamapi.data.SteamApp;
 
-import java.util.Arrays;
-
 import org.jsoup.Jsoup;
-import org.unbescape.html.HtmlEscape;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
