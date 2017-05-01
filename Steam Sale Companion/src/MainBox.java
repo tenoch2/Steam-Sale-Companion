@@ -1,6 +1,8 @@
 
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
+import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -249,7 +251,7 @@ public class MainBox extends javax.swing.JFrame {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				try {
 					importBtnActionPerformed(evt);
-				} catch (IOException e) {
+				} catch (IOException | SteamCondenserException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -545,12 +547,14 @@ public class MainBox extends javax.swing.JFrame {
 		search();
 	}// GEN-LAST:event_gameInputFieldActionPerformed
 
-	private void importBtnActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_importBtnActionPerformed
+	private void importBtnActionPerformed(java.awt.event.ActionEvent evt) throws IOException, SteamCondenserException {//GEN-FIRST:event_importBtnActionPerformed
     	GameRetriever retriever = new GameRetriever(usernameTextField.getText());
-        if(!gameList.isEmpty())
-        	gameList.clear();
+    	retriever.getGameNamesFromWishList();
+        if(gameList.isEmpty()){
+        	gameList = new ArrayList<SteamApp>();
+        }
         for(String game : retriever.getGameNames()){
-        	//currentGameAddBtnClicked(appFromName(game).get());
+        	gameList.add(appFromName(game).get());
         }
         
     }// GEN-LAST:event_importBtnActionPerformed
