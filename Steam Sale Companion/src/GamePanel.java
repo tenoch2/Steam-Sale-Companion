@@ -2,6 +2,11 @@
 import com.github.goive.steamapi.data.SteamApp;
 
 import org.jsoup.Jsoup;
+<<<<<<< HEAD
+=======
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+>>>>>>> refs/remotes/origin/Step-Two-GUI
 
 /*
  * To change this license header, choose License Headers in Project Properties.
