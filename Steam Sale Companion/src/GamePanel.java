@@ -1,6 +1,12 @@
 
 import com.github.goive.steamapi.data.SteamApp;
 
+import java.util.Arrays;
+
+import org.jsoup.Jsoup;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -240,13 +246,15 @@ public class GamePanel extends javax.swing.JPanel {
     /**
      * sets the Description Text Area to the String 
      * provided
-     * @param discription 
+     * @param description 
      */
-    public void setDescription(String discription)
+    public void setDescription(String description)
     {
-        descriptionBox.setText(discription);
+    	
+        descriptionBox.setText(Jsoup.parse(description).text());
     }
 
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
     private javax.swing.JLabel costLabel;

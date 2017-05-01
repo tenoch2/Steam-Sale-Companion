@@ -1,7 +1,10 @@
 
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.swing.DefaultListModel;
 
@@ -13,12 +16,12 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author micha
+ * @author michael
  */
 public class MainBox extends javax.swing.JFrame {
 
     //Creates variables steam (the steam API), game (a steam App), and the list 
-    //of Steam Apps for prccessing
+    //of Steam Apps for proccessing
     SteamApi steam; 
     SteamApp game;
     ArrayList<SteamApp> gameList;
@@ -67,7 +70,9 @@ public class MainBox extends javax.swing.JFrame {
         currentGame = new GamePanel();
         jPanel2 = new javax.swing.JPanel();
         buttonPanel = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        usernameTextField = new javax.swing.JTextField();
+        importBtn = new javax.swing.JButton();
         outputPanel = new javax.swing.JPanel();
         priceSlider = new javax.swing.JSlider();
         priceLable = new javax.swing.JLabel();
@@ -203,7 +208,7 @@ public class MainBox extends javax.swing.JFrame {
                         .addComponent(removeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(clearGameListBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(110, Short.MAX_VALUE))
+                        .addContainerGap(92, Short.MAX_VALUE))
                     .addComponent(jScrollPane1)
                     .addComponent(inputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -227,8 +232,18 @@ public class MainBox extends javax.swing.JFrame {
 
         buttonPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton2.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
-        jButton2.setText("Import");
+        jLabel1.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
+        jLabel1.setText("Enter your Steam username to import your wishlist");
+
+        usernameTextField.setFont(new java.awt.Font("Serif", 0, 14)); // NOI18N
+
+        importBtn.setFont(new java.awt.Font("Serif", 0, 14)); // NOI18N
+        importBtn.setText("Import wishlist");
+        importBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
@@ -236,14 +251,23 @@ public class MainBox extends javax.swing.JFrame {
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(buttonPanelLayout.createSequentialGroup()
+                        .addComponent(usernameTextField)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(importBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(buttonPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(usernameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(importBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -288,7 +312,6 @@ public class MainBox extends javax.swing.JFrame {
         resultTextArea.setEditable(false);
         resultTextArea.setColumns(20);
         resultTextArea.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
-        resultTextArea.setLineWrap(true);
         resultTextArea.setRows(5);
         resultTextArea.setWrapStyleWord(true);
         resultTextArea.setBorder(null);
@@ -376,10 +399,8 @@ public class MainBox extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(outputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(outputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -442,6 +463,7 @@ public class MainBox extends javax.swing.JFrame {
             gamePanel.setGameName("-Game not found-");
             gamePanel.setCost("--.--");
             gamePanel.setDiscount("---"); 
+            gamePanel.setDescription("");
         } 
     }
     
@@ -456,8 +478,14 @@ public class MainBox extends javax.swing.JFrame {
     private void calculateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateBtnActionPerformed
         //TODO add ranking system algorithm
         clearBtnActionPerformed(evt);
-        gameList.stream().forEach((SteamApp app) -> {
-            resultTextArea.append(app.getName() + "\n");
+        DecimalFormat df = new DecimalFormat("#.##");
+        ListMaker listMaker = new ListMaker(gameList);
+
+        List<Game> games = ListMaker.generateScores(gameList, priceSlider.getValue(), saleSlider.getValue(), criticSlider.getValue());
+        
+        
+        games.stream().forEach((game) -> {
+            resultTextArea.append(game.getSteamGame().getName() + "  :  " + df.format(game.getScore()) + "\n");
         });
     }//GEN-LAST:event_calculateBtnActionPerformed
 
@@ -491,6 +519,13 @@ public class MainBox extends javax.swing.JFrame {
         // TODO add your handling code here: 
         search();
     }//GEN-LAST:event_gameInputFieldActionPerformed
+
+    private void importBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importBtnActionPerformed
+        //import wishlist
+        
+        
+        
+    }//GEN-LAST:event_importBtnActionPerformed
     
     private Optional<SteamApp> appFromName(String appName)
     {
@@ -555,8 +590,9 @@ public class MainBox extends javax.swing.JFrame {
     private javax.swing.JPanel currentGamePanel;
     private javax.swing.JTextField gameInputField;
     private javax.swing.JLabel gameLabel;
+    private javax.swing.JButton importBtn;
     private javax.swing.JPanel inputPanel;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -570,6 +606,7 @@ public class MainBox extends javax.swing.JFrame {
     private javax.swing.JTextField saleField;
     private javax.swing.JSlider saleSlider;
     private javax.swing.JButton searchButton;
+    private javax.swing.JTextField usernameTextField;
     private javax.swing.JButton viewBtn;
     // End of variables declaration//GEN-END:variables
     

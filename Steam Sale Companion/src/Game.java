@@ -1,5 +1,8 @@
+import java.text.DecimalFormat;
+
 import com.github.goive.steamapi.data.SteamApp;
 
+//plain jane data structure class
 public class Game {
     //creates a SteamApp object steamGame and the score value
     SteamApp steamGame;
@@ -37,6 +40,7 @@ public class Game {
      * @return 
      */
     public double getScore() {
+    	
             return score;
     }
 
