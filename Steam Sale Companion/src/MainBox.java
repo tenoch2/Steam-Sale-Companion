@@ -1,6 +1,7 @@
 
 import com.github.goive.steamapi.SteamApi;
 import com.github.goive.steamapi.data.SteamApp;
+import com.github.goive.steamapi.exceptions.SteamApiException;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class MainBox extends javax.swing.JFrame {
 		saleField.addKeyListener(new TextFieldListener(saleField, saleSlider));
 		criticField.addKeyListener(new TextFieldListener(criticField, criticSlider));
 		currentGame.setMainBox(this);
-		gameList = new ArrayList();
+		gameList = new ArrayList<SteamApp>();
 		lm = new DefaultListModel();
 		addedGames.setModel(lm);
 	}
@@ -97,7 +98,7 @@ public class MainBox extends javax.swing.JFrame {
 		setAlwaysOnTop(true);
 		setBackground(new java.awt.Color(0, 0, 0));
 
-		addedGames.setFont(new java.awt.Font("Serif", 0, 24)); // NOI18N
+		addedGames.setFont(new java.awt.Font("Serif", 0, 20)); // NOI18N
 		addedGames.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		addedGames.setToolTipText("");
 		jScrollPane1.setViewportView(addedGames);
@@ -547,17 +548,25 @@ public class MainBox extends javax.swing.JFrame {
 		search();
 	}// GEN-LAST:event_gameInputFieldActionPerformed
 
-	private void importBtnActionPerformed(java.awt.event.ActionEvent evt) throws IOException, SteamCondenserException {//GEN-FIRST:event_importBtnActionPerformed
-    	GameRetriever retriever = new GameRetriever(usernameTextField.getText());
-    	retriever.getGameNamesFromWishList();
-        if(gameList.isEmpty()){
-        	gameList = new ArrayList<SteamApp>();
-        }
-        for(String game : retriever.getGameNames()){
-        	gameList.add(appFromName(game).get());
-        }
-        
-    }// GEN-LAST:event_importBtnActionPerformed
+	private void importBtnActionPerformed(java.awt.event.ActionEvent evt) throws IOException, SteamCondenserException {// GEN-FIRST:event_importBtnActionPerformed
+		GameRetriever retriever = new GameRetriever(usernameTextField.getText());
+		retriever.getGameNamesFromWishList();
+		if (gameList.isEmpty()) {
+			gameList = new ArrayList<SteamApp>();
+		}
+		SteamApi steam = new SteamApi("US");
+		for (String game : retriever.getGameNames()) {
+			try {
+				SteamApp steamGame = steam.retrieve(game);
+				gameList.add(steamGame);
+				lm.addElement(steamGame.getName());
+			} catch (SteamApiException e) {
+				e.printStackTrace();
+			}
+			
+		}
+
+	}// GEN-LAST:event_importBtnActionPerformed
 
 	private Optional<SteamApp> appFromName(String appName) {
 		Optional<SteamApp> app = Optional.empty();
