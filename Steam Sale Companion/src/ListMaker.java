@@ -36,7 +36,7 @@ public class ListMaker {
 
 			if (game.getPrice() > 0)
 				priceWeight = (Math.sqrt(lowestPrice / game.getPrice()) * priceRate);
-			else //this catches free games that would orignally break program
+			else //this catches free games that would originally break program
 				priceWeight = priceRate;
 
 			double salePercent = game.getPriceDiscountPercentage();
@@ -45,7 +45,7 @@ public class ListMaker {
 			if (game.getMetacriticScore() != null)
 				reviewWeight = (Math.sqrt((Math.sqrt((highestScore / (double) game.getMetacriticScore())))))
 						* reviewRate;
-			else //not every game has metacritic score. Main reason we are working on implementing user review scores for now.
+			else //not every game has Metacritic score. Main reason we are working on implementing user review scores for now.
 				reviewWeight = 0;
 			
 			
