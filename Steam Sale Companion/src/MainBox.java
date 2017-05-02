@@ -7,9 +7,14 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,7 +24,7 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author michael
+ * @author michael, Tristan
  */
 @SuppressWarnings("serial")
 public class MainBox extends javax.swing.JFrame {
@@ -39,6 +44,13 @@ public class MainBox extends javax.swing.JFrame {
 
 		initComponents();
 		steam = new SteamApi("US");
+		SliderGroup sliderGroup = new SliderGroup();
+		List<JSlider> sliders = new LinkedList<JSlider>();
+		sliders.add(priceSlider);
+		sliders.add(saleSlider);
+		sliders.add(criticSlider);
+		
+		
 		priceSlider.addChangeListener(new SlideListener(priceField, priceSlider));
 		saleSlider.addChangeListener(new SlideListener(saleField, saleSlider));
 		criticSlider.addChangeListener(new SlideListener(criticField, criticSlider));
@@ -79,14 +91,14 @@ public class MainBox extends javax.swing.JFrame {
 		usernameTextField = new javax.swing.JTextField();
 		importBtn = new javax.swing.JButton();
 		outputPanel = new javax.swing.JPanel();
-		priceSlider = new javax.swing.JSlider();
+		priceSlider = new javax.swing.JSlider(0, 100, 60);
 		priceLable = new javax.swing.JLabel();
 		priceField = new javax.swing.JTextField();
 		SaleLabel = new javax.swing.JLabel();
-		saleSlider = new javax.swing.JSlider();
+		saleSlider = new javax.swing.JSlider(0, 100, 20);
 		saleField = new javax.swing.JTextField();
 		MetaCritLAble = new javax.swing.JLabel();
-		criticSlider = new javax.swing.JSlider();
+		criticSlider = new javax.swing.JSlider(0, 100, 20);
 		criticField = new javax.swing.JTextField();
 		jScrollPane2 = new javax.swing.JScrollPane();
 		resultTextArea = new javax.swing.JTextArea();
@@ -286,7 +298,7 @@ public class MainBox extends javax.swing.JFrame {
 						.addContainerGap()));
 
 		outputPanel.setBackground(new java.awt.Color(255, 255, 255));
-
+		
 		priceSlider.setMajorTickSpacing(10);
 		priceSlider.setMinorTickSpacing(2);
 		priceSlider.setPaintTicks(true);
@@ -363,6 +375,7 @@ public class MainBox extends javax.swing.JFrame {
 												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 125,
 												javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addComponent(createListeningLable(priceSlider))
 								.addComponent(saleSlider, javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(outputPanelLayout.createSequentialGroup()
@@ -372,6 +385,7 @@ public class MainBox extends javax.swing.JFrame {
 												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addComponent(saleField, javax.swing.GroupLayout.PREFERRED_SIZE, 125,
 												javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addComponent(createListeningLable(saleSlider))
 								.addComponent(criticSlider, javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(outputPanelLayout.createSequentialGroup()
@@ -381,6 +395,7 @@ public class MainBox extends javax.swing.JFrame {
 												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addComponent(criticField, javax.swing.GroupLayout.PREFERRED_SIZE, 125,
 												javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addComponent(createListeningLable(criticSlider))
 								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
 										outputPanelLayout.createSequentialGroup()
 												.addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125,
@@ -389,6 +404,7 @@ public class MainBox extends javax.swing.JFrame {
 														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 												.addComponent(calculateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125,
 														javax.swing.GroupLayout.PREFERRED_SIZE)))
+								.addComponent(createListeningLable(priceSlider, saleSlider, criticSlider))
 						.addContainerGap()));
 		outputPanelLayout.setVerticalGroup(outputPanelLayout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -464,6 +480,36 @@ public class MainBox extends javax.swing.JFrame {
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
+	private static JLabel createListeningLable(final JSlider ... sliders){
+		final JLabel label = new JLabel("");
+		
+		for(JSlider slider : sliders){
+			slider.addChangeListener(new ChangeListener(){
+				@Override
+				public void stateChanged(ChangeEvent e){
+					int sum = 0; 
+					for (JSlider slider : sliders) {
+						sum += slider.getValue();
+					}
+					label.setText("Sum: " +sum);
+				}
+			});
+		}
+		
+		return label;
+	}
+	
+	private static JLabel createListeningLabel(final JSlider slider){
+		final JLabel label = new JLabel("");
+		slider.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e){
+				label.setText(String.valueOf(slider.getValue()));
+			}
+		});
+		return label;
+	}
+	
 	/**
 	 * sets the current game panel to display the current game
 	 * 

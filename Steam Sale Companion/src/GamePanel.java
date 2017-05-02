@@ -15,7 +15,7 @@ import com.github.goive.steamapi.data.SteamApp;
 
 /**
  *
- * @author Michael
+ * @author Michael, Tristan
  */
 public class GamePanel extends javax.swing.JPanel {
     /**
