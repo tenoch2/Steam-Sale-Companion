@@ -1,8 +1,11 @@
 
+
 import com.github.goive.steamapi.data.SteamApp;
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import com.github.goive.steamapi.data.SteamApp;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,7 +15,7 @@ import org.w3c.dom.Element;
 
 /**
  *
- * @author micha
+ * @author Michael
  */
 public class GamePanel extends javax.swing.JPanel {
     /**
