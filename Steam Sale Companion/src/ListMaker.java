@@ -32,8 +32,8 @@ public class ListMaker {
 		//fetch lowest score for weighting
 		double lowestPrice = getLowestCost(games);
 		
-		//fetch highest score for weighting
-		double highestScore = getHighestScore(games);
+		//fetch highest critic score for weighting
+		double highestScore = getHighestMetaScore(games);
 		
 		List<Game> gameWithScores = new ArrayList<Game>();
 
@@ -87,7 +87,7 @@ public class ListMaker {
 		}
 		
 		//find the game with the highest cost and return its cost
-		private static double getHighestScore(List<SteamApp> games) {
+		private static double getHighestMetaScore(List<SteamApp> games) {
 			double highest = 0;
 			for (SteamApp game : games) {
 				if (game.getMetacriticScore() != null) {
