@@ -4,12 +4,21 @@ import com.github.goive.steamapi.data.SteamApp;
 import com.github.goive.steamapi.exceptions.SteamApiException;
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,7 +39,8 @@ public class MainBox extends javax.swing.JFrame {
 	SteamApp game;
 	ArrayList<SteamApp> gameList;
 	DefaultListModel<String> lm;
-
+	
+	
 	/**
 	 * Creates new form MainBox, initializes steam and gameList and also adds
 	 * change listeners to the sliders
@@ -60,7 +70,7 @@ public class MainBox extends javax.swing.JFrame {
 	// <editor-fold defaultstate="collapsed" desc="Generated
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-
+		
 		jPanel1 = new javax.swing.JPanel();
 		jScrollPane1 = new javax.swing.JScrollPane();
 		addedGames = new javax.swing.JList();
@@ -92,7 +102,25 @@ public class MainBox extends javax.swing.JFrame {
 		resultTextArea = new javax.swing.JTextArea();
 		calculateBtn = new javax.swing.JButton();
 		clearBtn = new javax.swing.JButton();
-
+		
+		//make feedback menu
+		JMenuBar menuBar = new JMenuBar();
+	
+		JMenu feedBackMenu = new JMenu("Feedback");
+		menuBar.add(feedBackMenu);
+		
+		JMenuItem sendFeedBackItem = new JMenuItem("Send FeedBack");
+		JMenuItem aboutItem = new JMenuItem("About");
+		feedBackMenu.add(aboutItem);
+		feedBackMenu.add(sendFeedBackItem);
+		
+		
+		ActionListener feedbackListener = new FeedbackListener();
+		sendFeedBackItem.addActionListener(feedbackListener);
+		
+		
+		
+		
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Steam-Sale Companion");
 		setAlwaysOnTop(true);
@@ -686,5 +714,19 @@ public class MainBox extends javax.swing.JFrame {
 		Optional<SteamApp> app = appFromName(appName);
 		if (app.isPresent())
 			removeGame(app.get());
+	}
+	
+	//feedbackListener
+	class FeedbackListener implements ActionListener {
+		public void actionPerformed(ActionEvent event){
+			
+		}
+	}
+	
+	//About Listener
+	class AboutListener implements ActionListener {
+		public void actionPerformed(ActionEvent event){
+			
+		}
 	}
 }
